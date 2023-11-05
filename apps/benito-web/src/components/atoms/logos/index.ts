@@ -1,4 +1,4 @@
-import Vite from "./vite";
+import Vite from "./vite.tsx";
 
 export interface LogosProps {
   width?: number | string;

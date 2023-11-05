@@ -1,4 +1,4 @@
-import { LogosProps } from "components/atoms/logos/index";
+import { LogosProps } from "./index.ts";
 
 const Vite = (props: LogosProps): JSX.Element => {
   return (

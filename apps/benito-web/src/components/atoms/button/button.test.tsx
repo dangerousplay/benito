@@ -1,4 +1,4 @@
-import Button from "./button";
+import Button from "./button.tsx";
 import { render, fireEvent } from "@testing-library/react";
 import { describe, test, expect, vi } from "vitest";
 
