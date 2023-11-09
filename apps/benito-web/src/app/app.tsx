@@ -1,19 +1,26 @@
 
 import {NavigationBar} from "../pages/base";
-import {Home} from "../pages/Home.tsx";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {LandingPage} from "../pages/LandingPage.tsx";
+import {Route, Routes, useNavigate} from "react-router-dom";
+import {NextUIProvider} from "@nextui-org/system";
+import {HomePage} from "../pages/HomePage.tsx";
 
 
 function App() {
+  const navigate = useNavigate();
+
   return (
-    <main>
-      <NavigationBar />
-      <BrowserRouter>
+      <NextUIProvider navigate={navigate}>
+        <main>
+          <NavigationBar />
+
           <Routes>
-              <Route path="/" Component={Home}/>
+              <Route path="/" Component={LandingPage}/>
+              <Route path="/home" Component={HomePage}/>
+              <Route path="/home/*" Component={HomePage}/>
           </Routes>
-      </BrowserRouter>
-    </main>
+        </main>
+      </NextUIProvider>
   );
 }
 

@@ -1,20 +1,22 @@
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
-import imgUrl from "../../assets/logo.png";
+import imgUrl from "../../assets/icons/logo.png";
 import {HeartIcon} from "@heroicons/react/20/solid";
 
 const textClass = "font-bold text-white";
 
 export const NavigationBar = () => {
     return (
-        <Navbar position="static" className={"bg-black"} >
+        <Navbar position="sticky"  className={"bg-black"} >
             <NavbarBrand>
-                <img src={imgUrl} width={60} height={60} alt={"Benito logo"} />
-                <p className={textClass}>Benito</p>
+                <Link href="/">
+                    <img src={imgUrl} width={60} height={60} alt={"Benito logo"} />
+                    <p className={textClass}>Benito</p>
+                </Link>
             </NavbarBrand>
 
             <NavbarContent justify="end" className={"gap-x-4 justify-end"}>
                 <NavbarItem>
-                    <Link href="#">
+                    <Link href="/home/organizations">
                         <Button color="danger" size="sm" startContent={<HeartIcon className={"w-4"}/>} className={"font-bold text-medium"}>
                             Doar
                         </Button>
