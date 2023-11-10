@@ -1,0 +1,268 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+   provider = "cockroachdb"
+   url = "postgresql://root@localhost:26257/defaultdb?schema=public"
+}
+
+plugin openapi {
+  provider = '@zenstackhq/openapi'
+  output = 'openapi.yaml'
+  prefix = '/api/model'
+}
+
+plugin hooks {
+    provider = "@zenstackhq/tanstack-query"
+    output = "../apps/benito-common/hooks"
+    target = "react"
+    version = 'v5'
+}
+
+
+
+enum SystemRole {
+    USER
+    ADMIN
+}
+
+enum UserRole {
+   VOLUNTEER
+   MANAGER
+}
+
+
+
+model User {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email String @unique @allow('read', auth() == this)
+  name String @length(min: 3, max: 90)
+  lastName String @length(min: 3, max: 90)
+  birthDate String @regex("^[0-9]{4}(/[0-9]){2}$")
+  role SystemRole @default(USER) @allow('update', auth().role == ADMIN)
+
+  organizations OrganizationUsers[]
+
+  @@index([email])
+
+  @@allow('all', auth() == this)
+  @@allow('read', true)
+}
+
+
+
+model OrganizationUsers {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Entity @relation(fields: [organizationId], references: [id])
+  organizationId BigInt
+
+  user User @relation(fields: [userId], references: [id])
+  userId BigInt
+
+  role UserRole @allow('update', auth() == user && role == MANAGER || auth().role == ADMIN)
+}
+
+
+model Address {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  latitude Float? @gte(-90) @lte(90)
+  longitude Float? @gte(-180) @lte(180)
+
+  zipcode String @length(min: 3, max: 15)
+  country String @length(min: 3, max: 32)
+  region String @length(min: 3, max: 32)
+  city String @length(min: 3, max: 32)
+  street String @length(min: 3, max: 120)
+  number String @length(min: 3, max: 32)
+
+  place Place?
+
+  @@allow('all', auth().role == ADMIN)
+}
+
+
+model Place {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  address Address @relation(fields: [addressId], references: [id])
+  addressId BigInt @unique
+
+  workingDays Json
+
+  opens_at Int @gte(0) @lte(2359)
+  closes_at Int @gte(0) @lte(2359)
+
+  donationCenter DonationCenter?
+  entity Entity?
+}
+
+
+model Entity {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @length(min: 3, max: 120)
+  description String @length(min: 3, max: 250)
+  iconUrl String? @url()
+
+  email String? @email()
+  phone_number String? @regex("^[0-9]{11}$")
+  website String? @url()
+
+  place Place @relation(fields: [placeId], references: [id])
+  placeId BigInt @unique
+
+  users OrganizationUsers[]
+  donationCenters DonationCenter[]
+
+  itemNeeds ItemNeed[]
+  campaings Campaing[]
+  tags EntityTags[]
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
+}
+
+model Tag {
+   id BigInt @id @default(autoincrement())
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+
+   name String @length(min: 3, max: 120) @unique
+
+   entityTags EntityTags[]
+
+   @@allow('all', auth().role == ADMIN)
+   @@allow('read', true)
+}
+
+model EntityTags {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entity Entity @relation(fields: [entityId], references: [id])
+  entityId BigInt
+
+  tag Tag @relation(fields: [tagId], references: [id])
+  tagId BigInt
+}
+
+model DonationCenter {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @length(min: 3, max: 120)
+
+  entity Entity @relation(fields: [entityId], references: [id])
+  entityId BigInt
+
+  place Place @relation(fields: [placeId], references: [id])
+  placeId BigInt @unique
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
+}
+
+
+
+enum Urgency {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+
+model ItemMeasurement {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @unique @length(min: 3, max: 120)
+  unit String @length(min: 3, max: 10)
+
+  itemCategories ItemCategory[]
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
+}
+
+model ItemCategory {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @length(min: 3, max: 120)
+  description String @length(min: 3, max: 250)
+  measurement ItemMeasurement @relation(fields: [measurementId], references: [id])
+  measurementId BigInt
+
+  itemNeeds ItemNeed[]
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
+}
+
+model ItemNeed {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @length(min: 3, max: 120)
+  description String @length(min: 3, max: 500)
+  category ItemCategory @relation(fields: [categoryId], references: [id])
+  categoryId BigInt
+
+  entity Entity @relation(fields: [entityId], references: [id])
+  entityId BigInt
+
+  campaing Campaing @relation(fields: [campaingId], references: [id])
+  campaingId BigInt
+
+  urgency Urgency
+
+  minimum Int? @gt(0)
+  currentAcquired Int? @gte(0)
+
+  active Boolean
+  completed Boolean
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', active)
+}
+
+model Campaing {
+  id BigInt @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @length(min: 3, max: 120)
+  description String @length(min: 3, max: 500)
+
+  entity Entity @relation(fields: [entityId], references: [id])
+  entityId BigInt
+
+  needs ItemNeed[]
+
+  active Boolean
+  completed Boolean
+
+  endDate DateTime?
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', active)
+}
