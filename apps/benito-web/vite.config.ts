@@ -15,6 +15,9 @@ export default defineConfig((configEnv) => {
       environment: "happy-dom",
       setupFiles: "./src/infrastructure/tests.setup.ts",
     },
+    optimizeDeps: {
+      exclude: ['@tanstack/react-query']
+    },
     resolve: {
       alias: {
         app: resolve(__dirname, "src", "app"),
