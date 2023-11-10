@@ -2,10 +2,10 @@ import {Card, CardBody, Chip} from "@nextui-org/react";
 import Pin from "../../assets/icons/PinSvg.tsx";
 import CompassSvg from "../../assets/icons/CompassSvg.tsx";
 
-import refeicaoIconUrl from "../../assets/entities/refeicao_solidaria_logo.png";
-import combateFomeIconUrl from "../../assets/entities/acao_contra_fome_logo.png";
-import quilombolasIconUrl from "../../assets/entities/quilombolas_logo.png";
-import ranchoIconUrl from "../../assets/entities/rancho_gnomos_logo.png";
+import refeicaoIconUrl from "../../../public/entities/refeicao_solidaria_logo.png";
+import combateFomeIconUrl from "../../../public/entities/acao_contra_fome_logo.png";
+import quilombolasIconUrl from "../../../public/entities/quilombolas_logo.png";
+import ranchoIconUrl from "../../../public/entities/rancho_gnomos_logo.png";
 
 
 type EntityProps = {
