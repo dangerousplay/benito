@@ -1,0 +1,17 @@
+{
+  "name": "benito-common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "5.2.0",
+    "@tanstack/react-query": "^5.8.1",
+    "@zenstackhq/tanstack-query": "^1.2.1"
+  }
+}
