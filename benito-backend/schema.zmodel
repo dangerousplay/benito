@@ -208,6 +208,7 @@ model ItemCategory {
 
   name String @length(min: 3, max: 120)
   description String @length(min: 3, max: 250)
+
   measurement ItemMeasurement @relation(fields: [measurementId], references: [id])
   measurementId BigInt
 
@@ -230,8 +231,8 @@ model ItemNeed {
   entity Entity @relation(fields: [entityId], references: [id])
   entityId BigInt
 
-  campaing Campaing @relation(fields: [campaingId], references: [id])
-  campaingId BigInt
+  campaing Campaing? @relation(fields: [campaingId], references: [id])
+  campaingId BigInt?
 
   urgency Urgency
 

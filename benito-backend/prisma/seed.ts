@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 
 const upsertEntityTag = (name: string) => {
-
   return {
     create: {
       tag: {
@@ -202,6 +201,17 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
       }
     }
   },
+  {
+    id: 4,
+    name: "Ração animal",
+    description: "Ração para animais domésticos como Cães e Gatos.",
+    measurement: {
+      connect: {
+        id: undefined,
+        name: "Quilogramas"
+      }
+    }
+  },
 ]
 
 
@@ -213,82 +223,129 @@ const needs: Prisma.ItemNeedCreateInput[] = [
     description: "Estamos preparando um almoço solidário e precisamos de alimentos não perecíveis.",
     category: {
       connect: {
-        id: undefined,
-        name: "Alimentos não perecíveis"
+        id: 1
       }
     },
     entity: {
       connect: {
-        id: undefined,
-        name: "Projeto refeição solidária"
+        id: 1
       }
     },
     urgency: Urgency.LOW,
     completed: false,
     active: true,
-  }
+  },
+  {
+    id: 2,
+    name: "Marmitas solidárias",
+    description: "Estamos preparando refeições para distribuir a pessoas vulneráveis e precisamos de alimentos não perecíveis.",
+    category: {
+      connect: {
+        id: 1
+      }
+    },
+    entity: {
+      connect: {
+        id: 2
+      }
+    },
+    urgency: Urgency.LOW,
+    completed: false,
+    active: true,
+  },
+  {
+    id: 3,
+    name: "Agasalho do bem",
+    description: "Precisamos de roupas de inverno para distribuirmos na comunidade.",
+    category: {
+      connect: {
+        id: 2
+      }
+    },
+    entity: {
+      connect: {
+        id: 3
+      }
+    },
+    urgency: Urgency.LOW,
+    completed: false,
+    active: true,
+  },
+  {
+    id: 4,
+    name: "Ração animal",
+    description: "Precisamos de ração não perecível para ajudarmos animais de rua.",
+    category: {
+      connect: {
+        id: 4
+      }
+    },
+    entity: {
+      connect: {
+        id: 4
+      }
+    },
+    urgency: Urgency.LOW,
+    completed: false,
+    active: true,
+  },
 ]
 
 
-async function createItemMeasurements() {
-  for (let i of itemMeasurement) {
-    const measurement = await prisma.itemMeasurement.create({
-      data: i
-    })
-  }
+function isDuplicateKey(code: string): boolean {
+  return code !== "P2002"
 }
 
-
-async function createItemCategories() {
-  for (let i of itemCategories) {
-    const category = await prisma.itemCategory.create({
-      data: i
-    })
+async function createRecords(items: any[], collection) {
+  for (const i of items) {
+    try {
+      await collection.create({
+        data: i
+      })
+    } catch (e) {
+      if (isDuplicateKey(e.code))
+         console.info("failed", e)
+    }
   }
 }
-
-async function createNeeds() {
-  for (let n of needs) {
-    const need = await prisma.itemNeed.create({
-      data: n
-    })
-  }
-}
-
 
 async function createEntities() {
   for (const e of entities) {
-    const {zipcode, number} = e.place.create.address.create;
+    try {
+      const {zipcode, number} = e.place.create.address.create;
 
-    const cepInfo = await CepCoords.getByCep(zipcode);
+      const cepInfo = await CepCoords.getByCep(zipcode);
 
-    e.place.create.address.create = {
-      latitude: cepInfo.lat,
-      longitude: cepInfo.lon,
-      street: cepInfo.logradouro,
-      zipcode: zipcode,
-      country: "Brazil",
-      region: cepInfo.uf,
-      city: cepInfo.localidade,
-      number: number
+      e.place.create.address.create = {
+        latitude: cepInfo.lat,
+        longitude: cepInfo.lon,
+        street: cepInfo.logradouro,
+        zipcode: zipcode,
+        country: "Brazil",
+        region: cepInfo.uf,
+        city: cepInfo.localidade,
+        number: number
+      }
+
+      const entity = await prisma.entity.create({
+        data: e,
+      })
+
+      console.log(`Created entity with id: ${entity.id}`)
+    } catch (e) {
+      if (isDuplicateKey(e.code))
+        console.info("failed", e)
     }
-
-    const entity = await prisma.entity.create({
-      data: e,
-    })
-
-    console.log(`Created entity with id: ${entity.id}`)
   }
 }
 
 async function main() {
   console.log(`Start seeding ...`)
 
-  await createItemMeasurements();
-  await createItemCategories();
-  await createNeeds();
-
+  await createRecords(itemMeasurement, prisma.itemMeasurement)
+  await createRecords(itemCategories, prisma.itemCategory)
   await createEntities();
+  await createRecords(needs, prisma.itemNeed)
 
   console.log(`Seeding finished.`)
 }

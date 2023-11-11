@@ -10,7 +10,7 @@
     "build": "npm run generate && nest build",
     "generate": "npx zenstack generate && npx prisma db push",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "seed": "npm run build && node dist/prisma/seed.js",
+    "seed": "node dist/prisma/seed.js",
     "start": "nest start",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
