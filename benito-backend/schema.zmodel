@@ -35,7 +35,7 @@ enum UserRole {
 
 
 model User {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -56,22 +56,25 @@ model User {
 
 
 model OrganizationUsers {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  organization Entity @relation(fields: [organizationId], references: [id])
-  organizationId BigInt
+  organization Entity @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
 
-  user User @relation(fields: [userId], references: [id])
-  userId BigInt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   role UserRole @allow('update', auth() == user && role == MANAGER || auth().role == ADMIN)
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
 }
 
 
-model Address {
-  id BigInt @id @default(autoincrement())
+model PlaceAddress {
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -85,32 +88,53 @@ model Address {
   street String @length(min: 3, max: 120)
   number String @length(min: 3, max: 32)
 
-  place Place?
+  place EntityPlace?
 
   @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
 }
 
 
-model Place {
-  id BigInt @id @default(autoincrement())
+model EntityPlace {
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  address Address @relation(fields: [addressId], references: [id])
-  addressId BigInt @unique
+  address PlaceAddress @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId String @unique
 
   workingDays Json
 
-  opens_at Int @gte(0) @lte(2359)
-  closes_at Int @gte(0) @lte(2359)
+  opensAt Int @gte(0) @lte(2359)
+  closesAt Int @gte(0) @lte(2359)
 
   donationCenter DonationCenter?
-  entity Entity?
+
+  entities EntityPlaces[]
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
+}
+
+
+model EntityPlaces {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  place EntityPlace @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId String
+
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId String
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
 }
 
 
 model Entity {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -119,11 +143,10 @@ model Entity {
   iconUrl String? @url()
 
   email String? @email()
-  phone_number String? @regex("^[0-9]{11}$")
+  phoneNumber String? @regex("^[0-9]{11}$")
   website String? @url()
 
-  place Place @relation(fields: [placeId], references: [id])
-  placeId BigInt @unique
+  places EntityPlaces[]
 
   users OrganizationUsers[]
   donationCenters DonationCenter[]
@@ -137,7 +160,7 @@ model Entity {
 }
 
 model Tag {
-   id BigInt @id @default(autoincrement())
+   id String @id @default(uuid())
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
 
@@ -150,29 +173,32 @@ model Tag {
 }
 
 model EntityTags {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  entity Entity @relation(fields: [entityId], references: [id])
-  entityId BigInt
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId String
 
-  tag Tag @relation(fields: [tagId], references: [id])
-  tagId BigInt
+  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId String
+
+  @@allow('all', auth().role == ADMIN)
+  @@allow('read', true)
 }
 
 model DonationCenter {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name String @length(min: 3, max: 120)
 
-  entity Entity @relation(fields: [entityId], references: [id])
-  entityId BigInt
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId String
 
-  place Place @relation(fields: [placeId], references: [id])
-  placeId BigInt @unique
+  place EntityPlace @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId String @unique
 
   @@allow('all', auth().role == ADMIN)
   @@allow('read', true)
@@ -188,7 +214,7 @@ enum Urgency {
 
 
 model ItemMeasurement {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -202,15 +228,15 @@ model ItemMeasurement {
 }
 
 model ItemCategory {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name String @length(min: 3, max: 120)
   description String @length(min: 3, max: 250)
 
-  measurement ItemMeasurement @relation(fields: [measurementId], references: [id])
-  measurementId BigInt
+  measurement ItemMeasurement @relation(fields: [measurementId], references: [id], onDelete: Cascade)
+  measurementId String
 
   itemNeeds ItemNeed[]
 
@@ -219,20 +245,20 @@ model ItemCategory {
 }
 
 model ItemNeed {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name String @length(min: 3, max: 120)
   description String @length(min: 3, max: 500)
-  category ItemCategory @relation(fields: [categoryId], references: [id])
-  categoryId BigInt
+  category ItemCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
 
-  entity Entity @relation(fields: [entityId], references: [id])
-  entityId BigInt
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId String
 
-  campaing Campaing? @relation(fields: [campaingId], references: [id])
-  campaingId BigInt?
+  campaing Campaing? @relation(fields: [campaingId], references: [id], onDelete: Cascade)
+  campaingId String?
 
   urgency Urgency
 
@@ -247,15 +273,15 @@ model ItemNeed {
 }
 
 model Campaing {
-  id BigInt @id @default(autoincrement())
+  id String @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name String @length(min: 3, max: 120)
   description String @length(min: 3, max: 500)
 
-  entity Entity @relation(fields: [entityId], references: [id])
-  entityId BigInt
+  entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId String
 
   needs ItemNeed[]
 
