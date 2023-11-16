@@ -10,20 +10,13 @@ import Needs from "./needs";
 
 const routes = [
     {
-        path: "/needs",
+        paths: ["/needs", "/"],
         icon: <SquareSVG />,
         title: "Necessidades",
         main: () => <Needs />
     },
     {
-        path: "/",
-        icon: <SquareSVG />,
-        title: "Necessidades",
-        main: () =>
-            <h2>Necessidades</h2>
-    },
-    {
-        path: "/organizations",
+        paths: ["/organizations"],
         icon: <SquareSVG />,
         title: "Organizações",
         main: () => <Organizations />
@@ -78,13 +71,16 @@ export const HomePage = () => {
                       // that requires you to render multiple things
                       // in multiple places at the same URL is nothing
                       // more than multiple <Route>s.
-                      <Route
-                          key={route.path}
-                          path={route.path}
-                          element={
-                              <PageContainer> {route.main()} </PageContainer>
-                          }
-                      />
+                      <>
+                          {route.paths.map(p => <Route
+                              key={p}
+                              path={p}
+                              element={
+                                  <PageContainer> {route.main()} </PageContainer>
+                              }/>
+                          )}
+                      </>
+
                   ))}
               </Routes>
           </div>
