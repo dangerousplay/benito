@@ -193,18 +193,20 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         id: undefined,
         name: "Quilogramas"
       }
-    }
+    },
+    iconUrl: "/public/item_category/non_perishable_food.png"
   },
   {
     id: "2",
-    name: "Roupas",
-    description: "Roupas de adultos e crianças.",
+    name: "Roupas leves",
+    description: "Roupas leves de adultos e crianças.",
     measurement: {
       connect: {
         id: undefined,
         name: "Unidades",
       }
-    }
+    },
+    iconUrl: "/public/item_category/soft_clothes.png"
   },
   {
     id: "3",
@@ -215,7 +217,8 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         id: undefined,
         name: "Unidades",
       }
-    }
+    },
+    iconUrl: "/public/item_category/construction.png"
   },
   {
     id: "4",
@@ -226,7 +229,44 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         id: undefined,
         name: "Quilogramas"
       }
-    }
+    },
+    iconUrl: "/public/item_category/pet_items.png"
+  },
+  {
+    id: "5",
+    name: "Remédios",
+    description: "Remédios para o tratamento de feridas.",
+    measurement: {
+      connect: {
+        id: undefined,
+        name: "Unidades"
+      }
+    },
+    iconUrl: "/public/item_category/medicine.png"
+  },
+  {
+    id: "6",
+    name: "Cobertores",
+    description: "Cobertores para adultos e crianças.",
+    measurement: {
+      connect: {
+        id: undefined,
+        name: "Unidades"
+      }
+    },
+    iconUrl: "/public/item_category/medicine.png"
+  },
+  {
+    id: "7",
+    name: "Higiene",
+    description: "Materiais para higiene, como desinfetante, detergente.",
+    measurement: {
+      connect: {
+        id: undefined,
+        name: "Unidades"
+      }
+    },
+    iconUrl: "/public/item_category/hygiene.png"
   },
 ]
 

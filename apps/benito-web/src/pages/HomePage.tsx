@@ -56,7 +56,7 @@ type PageContainerProps = React.PropsWithChildren<{}>;
 
 const PageContainer = ({ children }: PageContainerProps) => {
     return (
-        <section className={"ml-10"}>
+        <section className={"ml-10 w-full"}>
             {children}
         </section>
     )

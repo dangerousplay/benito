@@ -147,6 +147,7 @@ export default function ListNeeds() {
                 select: {
                     id: true,
                     name: true,
+                    iconUrl: true,
                 }
             }
         },
@@ -179,7 +180,7 @@ export default function ListNeeds() {
         return {
             title: i.name,
             description: i.description,
-            iconUrl: "",
+            iconUrl: i.category.iconUrl,
             address: closestAddress,
             distance: closestAddress.distance,
             entityId: i.entity.id,

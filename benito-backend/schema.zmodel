@@ -234,6 +234,7 @@ model ItemCategory {
 
   name String @length(min: 3, max: 120)
   description String @length(min: 3, max: 250)
+  iconUrl String @url()
 
   measurement ItemMeasurement @relation(fields: [measurementId], references: [id], onDelete: Cascade)
   measurementId String
