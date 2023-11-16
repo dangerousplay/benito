@@ -3,9 +3,15 @@ import React, {useRef, useState} from "react";
 import {GoogleMap} from "../map";
 import {computeBoundingBox, sortByClosest} from "benito-common/geolocation";
 import {useGeolocated} from "react-geolocated";
+import {SlotsToClasses} from "@nextui-org/theme";
+
+type CardClassNames = "cardHeader";
 
 
 const defaultIconSize = () => new google.maps.Size(60, 60, "px", "px")
+
+const defaultMaxDistance = 14;
+
 
 type MapViewProps = {
     items: CardItemProps[];
@@ -57,11 +63,13 @@ const MapView = ({
 }
 
 const CardHeader = (props: CardMapListProps) => {
-    return (
-        <div>
-            {props.cardHeader}
+    const classNames = props?.classNames ?? {};
 
+    return (
+        <div className={classNames['cardHeader'] ?? ""}>
             <MapView {...props} />
+
+            {props.cardHeader}
         </div>
     )
 }
@@ -77,7 +85,11 @@ type CardMapListProps = {
     iconSize?: google.maps.Size;
     onMapCreated?: (g: google.maps.Map) => void;
 
+    maxDistance?: number;
+
     setAddressFilter?: (_: any) => void;
+
+    classNames?: SlotsToClasses<CardClassNames>;
 
     debugMap?: boolean;
 };
@@ -85,6 +97,7 @@ type CardMapListProps = {
 export const CardMapList = (props: CardMapListProps) => {
     const aditionalMarkers = props.additionalMarkers ?? [];
     const setAddressFilter = props.setAddressFilter
+    const maxDistance = props.maxDistance ?? defaultMaxDistance;
     let center = props.center;
 
     const map = useRef<google.maps.Map>(undefined);
@@ -102,7 +115,7 @@ export const CardMapList = (props: CardMapListProps) => {
     const isGeoReady = isGeolocationAvailable && coords;
 
     if (isGeoReady) {
-        const boudingCoords = computeBoundingBox({ lat: coords.latitude, lon: coords.longitude }, 7)
+        const boudingCoords = computeBoundingBox({ lat: coords.latitude, lon: coords.longitude }, maxDistance)
 
         if (coords?.latitude != currentCoords?.latitude && coords?.longitude != currentCoords?.longitude) {
             if (setAddressFilter) {
@@ -154,8 +167,11 @@ export const CardMapList = (props: CardMapListProps) => {
     sortByClosest(items);
 
     return (
-        <CardPlacesList cardHeader={
-            <CardHeader {...props} center={center} additionalMarkers={aditionalMarkers} onMapCreated={(m) => { map.current = m}} />
-        } {...props} items={items} />
+        <CardPlacesList {...props} cardHeader={
+            <CardHeader {...props}
+                        center={center}
+                        additionalMarkers={aditionalMarkers}
+                        onMapCreated={(m) => { map.current = m}} />
+        } items={items} />
     )
 }
