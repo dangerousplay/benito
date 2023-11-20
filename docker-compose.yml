@@ -8,3 +8,12 @@ services:
     volumes:
       - "${PWD}/cockroach-data/crdb:/cockroach/cockroach-data"
     restart: unless-stopped
+  minio:
+    image: "quay.io/minio/minio"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - "${PWD}/minio:/data"
+    command: "server /data --console-address :9001"
+    restart: unless-stopped
