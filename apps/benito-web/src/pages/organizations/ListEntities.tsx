@@ -30,8 +30,9 @@ type FiltersProps = {
 };
 
 const Filter = ({
-                    categories, onFilterUpdated = () => {
-    }, className
+                    categories,
+                    onFilterUpdated = () => {},
+                    className
                 }: FiltersProps) => {
     const filters = useRef<Filters>({})
 
@@ -77,7 +78,6 @@ const Filter = ({
                     </PopoverContent>
                 </Popover>
             </div>
-
         </CardHeader>
 
     )
@@ -97,7 +97,7 @@ export default function ListEntities() {
 
     const [addressFilter, setAddressFilter] = useState();
 
-    const {data: itemCategories} = useFindManyTag({
+    const {data: entityCategories} = useFindManyTag({
         select: {name: true, id: true}
     })
 
@@ -159,7 +159,7 @@ export default function ListEntities() {
         setCategoriesFilter(f.categories)
     }, 250)
 
-    const entities: CardItemProps[] = organizations ? organizations!.map(e => {
+    const entities: CardItemProps[] = organizations ? organizations.map(e => {
         const addresses = e.places.map(p => p.place.address);
 
         let closestAddress = addresses[0];
@@ -186,9 +186,9 @@ export default function ListEntities() {
               setAddressFilter(f)
             }}
             cardHeader={
-              <Filter onFilterUpdated={updateFilters}
-                      categories={itemCategories}
-              />
+                <Filter onFilterUpdated={updateFilters}
+                        categories={entityCategories}
+                />
             }
         />
     )

@@ -1,4 +1,4 @@
-import Sidebar from "./home/SideBar.tsx";
+import Sidebar, {Menu} from "./home/SideBar.tsx";
 
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/breadcrumbs";
 import {Link, Route, Routes, useLocation} from "react-router-dom";
@@ -8,18 +8,23 @@ import Organizations from "./organizations";
 import Needs from "./needs";
 
 
-const routes = [
+const routes: Menu[] = [
     {
-        paths: ["/needs", "/"],
+        paths: ["/needs", "/needs/*", "/"],
         icon: <SquareSVG />,
         title: "Necessidades",
-        main: () => <Needs />
+        main: () => <Needs />,
+        submenus: []
     },
     {
-        paths: ["/organizations"],
+        paths: ["/organizations", "/organizations/*"],
         icon: <SquareSVG />,
         title: "Organizações",
-        main: () => <Organizations />
+        main: () => <Organizations />,
+        submenus: [{
+            paths: ["register"],
+            title: "Registrar organização"
+        }]
     },
 ];
 
@@ -60,7 +65,7 @@ export const HomePage = () => {
       <div>
           <BreadCrumbs />
           <div className={"m-10 flex flex-auto"}>
-              <Sidebar routes={routes} routePrefix="/home" />
+              <Sidebar menus={routes} routePrefix="/home" />
 
               <Routes>
                   {routes.map((route) => (

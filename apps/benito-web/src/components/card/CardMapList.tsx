@@ -31,7 +31,7 @@ const MapView = ({
                      onMarkerClick = (_) => {
                      },
                      onMapCreated = (_) => {},
-                     className = 'sm:h-[36vh] md:h-[26vh]'
+                     className = 'sm:h-[30vh] md:h-[30vh]'
                  }: MapViewProps) => {
     const markers = items.map(i => {
         const marker = new google.maps.Marker({
