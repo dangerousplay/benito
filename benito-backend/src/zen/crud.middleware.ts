@@ -3,7 +3,7 @@ import { enhance } from '@zenstackhq/runtime';
 import RPCHandler from '@zenstackhq/server/api/rpc';
 import { ZenStackMiddleware } from '@zenstackhq/server/express';
 import { Request, Response } from 'express';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from '../service/prisma.service';
 
 @Injectable()
 export class CrudMiddleware implements NestMiddleware {

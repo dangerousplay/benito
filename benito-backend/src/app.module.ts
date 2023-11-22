@@ -1,11 +1,13 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from './service/prisma.service';
 import { ClsModule } from 'nestjs-cls';
 import { CrudMiddleware } from './zen/crud.middleware';
 import {S3ConfigurationModule, S3ModuleConf} from "./configuration";
 import {NeedsController} from "./controller";
 import {ConfigModule} from "@nestjs/config";
-import {NeedsService} from "./service";
+import {NeedsService, S3Service, ServiceModule} from "./service";
+import {FileImgValidatorConfProvider} from "./configuration/fileupload";
+import {EntitiesController} from "./controller/entity";
 
 
 @Module({
@@ -25,10 +27,11 @@ import {NeedsService} from "./service";
     }),
     S3ModuleConf,
     ConfigModule.forRoot(),
-    S3ConfigurationModule
+    S3ConfigurationModule,
+      ServiceModule
   ],
-  controllers: [NeedsController],
-  providers: [PrismaService, NeedsService],
+  controllers: [NeedsController, EntitiesController],
+  providers: [FileImgValidatorConfProvider],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -17,19 +17,20 @@ import {NeedsService} from "../service";
 import { Readable } from "stream";
 import type { Response } from 'express';
 import {fileImageValidator} from "../configuration/fileupload";
+import {EntityService} from "../service/entity.service";
 
 
 
-@Controller("/needs")
-export class NeedsController {
+@Controller("/entity")
+export class EntitiesController {
     constructor(
-        private needService: NeedsService
+        private entityService: EntityService
     ) {}
 
     @Get("/:id/image")
     async getNeedImage(@Param('id') id: string, @Res({ passthrough: true })  res: Response): Promise<StreamableFile> {
         try {
-            const image = await this.needService.getNeedImage(id)
+            const image = await this.entityService.getNeedImage(id)
 
             res.set({
                 "Content-Type": image.ContentType,
@@ -49,7 +50,7 @@ export class NeedsController {
     @UseInterceptors(FileInterceptor('file'))
     @ApiConsumes('multipart/form-data')
     @ApiBody({
-        description: 'Upload an image for the need',
+        description: 'Upload an image for the entity',
         type: NeedImageUpload,
     })
     @Post(":id/image")
@@ -59,6 +60,6 @@ export class NeedsController {
     ) {
         const { mimetype } = file;
 
-        await this.needService.setNeedImage(id, mimetype, file.buffer);
+        await this.entityService.setNeedImage(id, mimetype, file.buffer);
     }
 }

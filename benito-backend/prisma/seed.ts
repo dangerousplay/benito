@@ -30,7 +30,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Somos um grupo de pessoas que nos unimos para levar alimentos (marmitas) a pessoas em situação de rua.\n" +
         "Hoje, além de montarmos nossos kits alimentação, distribuímos kits pets, kits de higiene, kits de frio, cestas básicas, cobertores, etc",
-    iconUrl: '/public/entities/refeicao_solidaria_logo.png',
+    iconUrl: 'http://localhost:3002/public/entities/refeicao_solidaria_logo.png',
     places: {
       create: [{
         place: {
@@ -62,7 +62,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Somos amigos e parentes que mensalmente se unem de forma a ajudar o próximo, fazemos isso desde 1993.\n" +
         "Auxiliar a quem necessita doação de cestas básicas à famílias em situação de risco que moram em habitações coletivas, mães solteiras e idosos desamparados.",
-    iconUrl: '/public/entities/acao_contra_fome_logo.png',
+    iconUrl: 'http://localhost:3002/public/entities/acao_contra_fome_logo.png',
     places: {
       create: [{
         place: {
@@ -94,7 +94,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Temos por finalidade melhorar a qualidade de vida de nossos associados em geral, defendendo-os, organizando-os e desenvolvendo trabalho social, cultural e educacional.\n" +
         "junto aos adultos, idosos, jovens e crianças portadores ou não-portadores de deficiência, incluindo remanescentes de quilombos do Bairro da Liberdade.",
-    iconUrl: '/public/entities/quilombolas_logo.png',
+    iconUrl: 'http://localhost:3002/public/entities/quilombolas_logo.png',
     places: {
       create: [{
         place: {
@@ -126,7 +126,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Somos uma Organização Não-Governamental sem fins lucrativos e estamos movidos por uma filosofia de convivência harmoniosa entre os seres que habitam o planeta\n" +
         "Pregamos a ajuda mútua, onde não há melhor ou pior, mais ou menos importante, mas uma troca integrada de informação e de forças.",
-    iconUrl: '/public/entities/rancho_gnomos_logo.png',
+    iconUrl: 'http://localhost:3002/public/entities/rancho_gnomos_logo.png',
     places: {
       create: [{
         place: {
@@ -194,7 +194,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Quilogramas"
       }
     },
-    iconUrl: "/public/item_category/non_perishable_food.png"
+    iconUrl: "http://localhost:3002/public/item_category/non_perishable_food.png"
   },
   {
     id: "2",
@@ -206,7 +206,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades",
       }
     },
-    iconUrl: "/public/item_category/soft_clothes.png"
+    iconUrl: "http://localhost:3002/public/item_category/soft_clothes.png"
   },
   {
     id: "3",
@@ -218,7 +218,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades",
       }
     },
-    iconUrl: "/public/item_category/construction.png"
+    iconUrl: "http://localhost:3002/public/item_category/construction.png"
   },
   {
     id: "4",
@@ -230,7 +230,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Quilogramas"
       }
     },
-    iconUrl: "/public/item_category/pet_items.png"
+    iconUrl: "http://localhost:3002/public/item_category/pet_items.png"
   },
   {
     id: "5",
@@ -242,7 +242,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades"
       }
     },
-    iconUrl: "/public/item_category/medicine.png"
+    iconUrl: "http://localhost:3002/public/item_category/medicine.png"
   },
   {
     id: "6",
@@ -254,7 +254,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades"
       }
     },
-    iconUrl: "/public/item_category/medicine.png"
+    iconUrl: "http://localhost:3002/public/item_category/medicine.png"
   },
   {
     id: "7",
@@ -266,7 +266,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades"
       }
     },
-    iconUrl: "/public/item_category/hygiene.png"
+    iconUrl: "http://localhost:3002/public/item_category/hygiene.png"
   },
 ]
 
