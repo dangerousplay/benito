@@ -1,5 +1,5 @@
 import {Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, Input} from "@nextui-org/react";
-import {ReactElement} from "react";
+import {ReactElement, useState} from "react";
 import {PhotoUploadInput} from "../../components/input/PhotoUpload.tsx";
 import {useFormik} from "formik";
 
@@ -46,6 +46,7 @@ const InputSection = ({title, inputs}: InputSectionProps) => {
 export default function RegisterOrEditEntity() {
     const entityClient = useEntityClient();
     const createEntity = useCreateEntity();
+    const [image, setImage] = useState();
 
     const formik = useFormik({
         initialValues: {},
@@ -100,11 +101,18 @@ export default function RegisterOrEditEntity() {
             const upload = async () => {
                 console.log("Payload", payload)
 
-                const entity = await createEntity.mutate({
+                const entity = await createEntity.mutateAsync({
                     data: payload
                 })
 
                 console.log("entity", entity)
+
+                if(image) {
+                    await entityClient.uploadPhoto(entity.id, image)
+                    console.log("uploaded")
+                }
+
+
 
                 // entityClient.uploadPhoto()
             }
@@ -181,7 +189,7 @@ export default function RegisterOrEditEntity() {
                             ]
                         ]}/>
 
-                        <PhotoUploadInput label={"Foto da organização"} inputId={"photo"}/>
+                        <PhotoUploadInput label={"Foto da organização"} inputId={"photo"} onImageChange={setImage}/>
 
                     </div>
 
