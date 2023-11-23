@@ -57,7 +57,7 @@ export function CardPlacesList({items, isLoading}: Readonly<CardPlacesListProps>
 
     if (isLoading) {
         return (
-            <SView className={"justify-center items-center"}>
+            <SView className={"justify-center items-center pt-10"}>
                 <ActivityIndicator size="large" color="#00ff00" />
             </SView>
         )

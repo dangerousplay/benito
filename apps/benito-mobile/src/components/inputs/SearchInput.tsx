@@ -10,11 +10,11 @@ type SearchInputProps = {
 };
 
 export const SearchInput = ({ placeholder, className, elementAfter, onChangeText = (_) => {} }: SearchInputProps) => {
-    const extraClass = elementAfter ? 'space-x-2' : '';
+    const extraClass = elementAfter ? 'space-x-2 mr-6' : '';
 
     return (
         <SView className={`flex-row items-center ${extraClass} ${className}`}>
-            <SView className={`flex-1 bg-white rounded-2xl border`}>
+            <SView className={`flex-row items-center bg-white rounded-2xl border`}>
                 <SearchIcon width={23} height={23} className={"ml-2"}/>
                 <STextInput
                     className={"flex-1 px-2 w-full"}
