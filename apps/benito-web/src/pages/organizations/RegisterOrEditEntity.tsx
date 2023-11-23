@@ -7,11 +7,17 @@ import {Textarea} from "@nextui-org/react";
 
 
 import {EntityCreateSchema, EntityPlaceSchema} from 'benito-common/zod/models';
-import {useCreateEntity} from 'benito-common/hooks';
+import {useCreateEntity, useUpdateEntity} from 'benito-common/hooks';
 import {toFormikValidate} from "zod-formik-adapter";
-import {InputMask} from "@react-input/mask";
 import {InputMasked} from "../../components/input";
 import {useEntityClient} from 'benito-common/client';
+
+
+const validationSchema = toFormikValidate(EntityCreateSchema.merge(EntityPlaceSchema).omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true
+}))
 
 
 type InputSectionProps = {
@@ -46,13 +52,12 @@ const InputSection = ({title, inputs}: InputSectionProps) => {
 export default function RegisterOrEditEntity() {
     const entityClient = useEntityClient();
     const createEntity = useCreateEntity();
+    const updateEntity = useUpdateEntity();
     const [image, setImage] = useState();
 
     const formik = useFormik({
         initialValues: {},
         onSubmit: (values: any) => {
-            alert(JSON.stringify(values, null, 2));
-
             const {
                 name, description, email,
                 phoneNumber,
@@ -99,29 +104,27 @@ export default function RegisterOrEditEntity() {
             }
 
             const upload = async () => {
-                console.log("Payload", payload)
-
                 const entity = await createEntity.mutateAsync({
                     data: payload
                 })
 
-                console.log("entity", entity)
-
                 if(image) {
-                    await entityClient.uploadPhoto(entity.id, image)
-                    console.log("uploaded")
+                    const imageUrl = await entityClient.uploadPhoto(entity.id, image)
+
+                    await updateEntity.mutateAsync({
+                        data: {
+                            iconUrl: imageUrl
+                        },
+                        where: {
+                            id: entity.id
+                        }
+                    })
                 }
-
-
-
-                // entityClient.uploadPhoto()
             }
 
-            upload().then(s => console.log(s)).catch(e => console.error(e))
-
-
+            upload().catch(e => console.error(e))
         },
-        // validate: toFormikValidate(EntityCreateSchema.merge(EntityPlaceSchema))
+        validate: validationSchema
     });
 
     // @ts-ignore

@@ -9,11 +9,15 @@ export class EntityClient {
         const formData = new FormData();
         formData.append("file", file)
 
-        const response = await axios.post(`${this.url}/entity/${id}/image`, formData, {
+        const url = `${this.url}/entity/${id}/image`
+
+        const response = await axios.post(url, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
+
+        return url
     }
 }
 
