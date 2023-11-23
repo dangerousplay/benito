@@ -16,7 +16,7 @@ export const TabBarIcon = ({title}) => {
 export const TabsLayout = () => {
   return (
     <Tabs
-      initialRouteName="profile"
+      initialRouteName="needs"
       screenOptions={{
         headerShown: false,
       }}
@@ -26,7 +26,7 @@ export const TabsLayout = () => {
         name="user-profile"
         options={{
           href: '/home/user-profile',
-          title: 'ss',
+          title: 'Usuário',
           tabBarIcon: ({ color }) => (<TabBarIcon title="profile" />),
         }}
       />
@@ -34,16 +34,16 @@ export const TabsLayout = () => {
         name="needs"
         options={{
           href: '/home/needs',
-          title: 'sa',
+          title: 'Necessidades',
           tabBarIcon: ({ color }) => (<TabBarIcon title="needs" />),
         }}
       />
       <Tabs.Screen
-        name="calendar"
+        name="entities"
         options={{
-          href: '/home/calendar',
-          title: 'st',
-          tabBarIcon: ({ color }) => (<TabBarIcon title="calendar" />),
+          href: '/home/entities',
+          title: 'Organizações',
+          tabBarIcon: ({ color }) => (<TabBarIcon title="Organizações" />),
         }}
       />
     </Tabs>
