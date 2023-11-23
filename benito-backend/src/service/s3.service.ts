@@ -2,7 +2,7 @@ import {Inject, Injectable, Logger} from "@nestjs/common";
 import {InjectS3, S3} from "nestjs-s3";
 import {S3Configuration} from "../configuration";
 import {GetObjectCommandOutput} from "@aws-sdk/client-s3";
-import path from "path";
+import * as path from "path";
 
 
 @Injectable()
