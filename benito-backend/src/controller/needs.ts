@@ -1,9 +1,8 @@
 import {
     Controller,
     Get,
-    HttpStatus, Inject,
-    Param, ParseFilePipe,
-    ParseFilePipeBuilder,
+    Logger,
+    Param,
     Post, Res, StreamableFile,
     UploadedFile,
     UseInterceptors
@@ -17,11 +16,13 @@ import {NeedsService} from "../service";
 import { Readable } from "stream";
 import type { Response } from 'express';
 import {fileImageValidator} from "../configuration/fileupload";
-
+import {detectImageType} from "../image";
 
 
 @Controller("/needs")
 export class NeedsController {
+    private readonly logger = new Logger(NeedsController.name);
+
     constructor(
         private needService: NeedsService
     ) {}
@@ -40,6 +41,8 @@ export class NeedsController {
         } catch (e) {
             if (e instanceof NoSuchKey) {
                 res.status(404)
+
+                this.logger.debug(`Not found image for need '${id}'`)
             } else {
                 throw e
             }
@@ -57,8 +60,10 @@ export class NeedsController {
         @UploadedFile(fileImageValidator) file: Express.Multer.File,
         @Param('id') id: string
     ) {
-        const { mimetype } = file;
+        const imageTyp = await detectImageType(file.buffer)
 
-        await this.needService.setNeedImage(id, mimetype, file.buffer);
+        this.logger.debug(`detected upload image type '${imageTyp.mime}' for '${id}'`)
+
+        await this.needService.setNeedImage(id, imageTyp.mime, file.buffer);
     }
 }

@@ -1,9 +1,7 @@
 import {
     Controller,
-    Get,
-    HttpStatus, Inject,
-    Param, ParseFilePipe,
-    ParseFilePipeBuilder,
+    Get, Logger,
+    Param,
     Post, Res, StreamableFile,
     UploadedFile,
     UseInterceptors
@@ -12,17 +10,19 @@ import {NoSuchKey} from "@aws-sdk/client-s3";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {ApiBody, ApiConsumes} from "@nestjs/swagger";
 import {NeedImageUpload} from "./dto/needs";
-import {NeedsService} from "../service";
 
 import { Readable } from "stream";
 import type { Response } from 'express';
 import {fileImageValidator} from "../configuration/fileupload";
 import {EntityService} from "../service/entity.service";
+import {detectImageType} from "../image";
 
 
 
 @Controller("/entity")
 export class EntitiesController {
+    private readonly logger = new Logger(EntitiesController.name);
+
     constructor(
         private entityService: EntityService
     ) {}
@@ -30,7 +30,7 @@ export class EntitiesController {
     @Get("/:id/image")
     async getNeedImage(@Param('id') id: string, @Res({ passthrough: true })  res: Response): Promise<StreamableFile> {
         try {
-            const image = await this.entityService.getNeedImage(id)
+            const image = await this.entityService.getEntityImage(id)
 
             res.set({
                 "Content-Type": image.ContentType,
@@ -41,6 +41,8 @@ export class EntitiesController {
         } catch (e) {
             if (e instanceof NoSuchKey) {
                 res.status(404)
+
+                this.logger.debug(`Not found image for entity '${id}'`)
             } else {
                 throw e
             }
@@ -58,8 +60,10 @@ export class EntitiesController {
         @UploadedFile(fileImageValidator) file: Express.Multer.File,
         @Param('id') id: string
     ) {
-        const { mimetype } = file;
+        const imageTyp = await detectImageType(file.buffer)
 
-        await this.entityService.setNeedImage(id, mimetype, file.buffer);
+        this.logger.debug(`detected upload image type '${imageTyp.mime}' for '${id}'`)
+
+        await this.entityService.setEntityImage(id, imageTyp.mime, file.buffer);
     }
 }

@@ -24,7 +24,7 @@ export class S3Service {
             Key: key
         });
 
-        this.logger.debug(`success getting image '${key}'`)
+        this.logger.debug(`success getting image '${key}' mimetype '${result.ContentType}'`)
 
         return result;
     }
@@ -32,7 +32,7 @@ export class S3Service {
     public async setImage(dir: string, id: string, mimetype: string, buffer: Buffer): Promise<void> {
         const key = S3Service.buildFilePath(dir, id);
 
-        this.logger.debug(`setting image for '${id}' using key '${key}' with mimetype '${mimetype}'`)
+        this.logger.debug(`setting image for '${key}' with mimetype '${mimetype}'`)
 
         const params = {
             Bucket: this.s3Config.imagesBucketName,
@@ -43,7 +43,7 @@ export class S3Service {
 
         await this.s3.putObject(params);
 
-        this.logger.debug(`success setting image for '${id}' using key '${key}' with mimetype '${mimetype}'`)
+        this.logger.debug(`success setting image for '${key}'`)
     }
 
     static buildFilePath(dir: string, id: string): string {
