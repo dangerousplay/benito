@@ -2,6 +2,7 @@ import {CardMapList} from "@/components/card";
 import {useFindManyEntity} from "benito-common/hooks";
 import {useState} from "react";
 import debounce from "lodash.debounce"
+import { router } from 'expo-router';
 
 
 type Filters = {
@@ -64,6 +65,7 @@ const Entities = () => {
         <CardMapList items={organizations}
                      onSearch={s => updateFilters((f: Filters) => ({...f, name: s}))}
                      isLoading={isFetching}
+                     onItemClick={i => router.push(`/entities/${i.id}`)}
         />
     )
 };
