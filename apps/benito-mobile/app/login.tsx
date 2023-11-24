@@ -1,7 +1,5 @@
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Link } from 'expo-router';
 import { router } from 'expo-router';
-import {useEffect} from "react";
 
 
 const InputText = ({ label, className = '' }) => {
@@ -36,7 +34,7 @@ const Login = () => {
             </View>
 
             <View className="w-2/3 pt-10">
-                <TouchableOpacity className="items-center justify-center bg-gray-200" onPress={(_) => router.replace('/home/user-profile')}>
+                <TouchableOpacity className="items-center justify-center bg-gray-200" onPress={(_) => router.replace('/home')}>
                     <Text className="p-1 text-xl font-bold">Login</Text>
                 </TouchableOpacity>
             </View>
