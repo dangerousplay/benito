@@ -1,6 +1,11 @@
 import { PrismaClient, Prisma, Urgency } from '@prisma/client'
 
-import * as CepCoords from "coordenadas-do-cep";
+import {S3} from '@aws-sdk/client-s3';
+import * as fs from 'fs';
+import * as path from 'path';
+
+import {detectImageType} from "../src/image";
+import {CoordenadasDoCep} from '../src/service/address.service'
 
 const prisma = new PrismaClient();
 
@@ -30,7 +35,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Somos um grupo de pessoas que nos unimos para levar alimentos (marmitas) a pessoas em situação de rua.\n" +
         "Hoje, além de montarmos nossos kits alimentação, distribuímos kits pets, kits de higiene, kits de frio, cestas básicas, cobertores, etc",
-    iconUrl: 'http://localhost:3002/public/entities/refeicao_solidaria_logo.png',
+    iconUrl: 'http://localhost:3002/entity/1/image',
     places: {
       create: [{
         place: {
@@ -62,7 +67,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Somos amigos e parentes que mensalmente se unem de forma a ajudar o próximo, fazemos isso desde 1993.\n" +
         "Auxiliar a quem necessita doação de cestas básicas à famílias em situação de risco que moram em habitações coletivas, mães solteiras e idosos desamparados.",
-    iconUrl: 'http://localhost:3002/public/entities/acao_contra_fome_logo.png',
+    iconUrl: 'http://localhost:3002/entity/2/image',
     places: {
       create: [{
         place: {
@@ -94,7 +99,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Temos por finalidade melhorar a qualidade de vida de nossos associados em geral, defendendo-os, organizando-os e desenvolvendo trabalho social, cultural e educacional.\n" +
         "junto aos adultos, idosos, jovens e crianças portadores ou não-portadores de deficiência, incluindo remanescentes de quilombos do Bairro da Liberdade.",
-    iconUrl: 'http://localhost:3002/public/entities/quilombolas_logo.png',
+    iconUrl: 'http://localhost:3002/entity/3/image',
     places: {
       create: [{
         place: {
@@ -126,7 +131,7 @@ const entities: Prisma.EntityCreateInput[] = [
     description:
         "Somos uma Organização Não-Governamental sem fins lucrativos e estamos movidos por uma filosofia de convivência harmoniosa entre os seres que habitam o planeta\n" +
         "Pregamos a ajuda mútua, onde não há melhor ou pior, mais ou menos importante, mas uma troca integrada de informação e de forças.",
-    iconUrl: 'http://localhost:3002/public/entities/rancho_gnomos_logo.png',
+    iconUrl: 'http://localhost:3002/entity/4/image',
     places: {
       create: [{
         place: {
@@ -152,6 +157,14 @@ const entities: Prisma.EntityCreateInput[] = [
     },
     tags: upsertEntityTag("Animal")
   }
+]
+
+
+const entityImages: Photo[] = [
+  {id: "1", imagePath: "./images/entities/refeicao_solidaria_logo.png"},
+  {id: "2", imagePath: "./images/entities/acao_contra_fome_logo.png"},
+  {id: "3", imagePath: "./images/entities/quilombolas_logo.png"},
+  {id: "4", imagePath: "./images/entities/rancho_gnomos_logo.png"},
 ]
 
 
@@ -194,7 +207,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Quilogramas"
       }
     },
-    iconUrl: "http://localhost:3002/public/item_category/non_perishable_food.png"
+    iconUrl: "http://localhost:3002/item/category/1/image"
   },
   {
     id: "2",
@@ -206,7 +219,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades",
       }
     },
-    iconUrl: "http://localhost:3002/public/item_category/soft_clothes.png"
+    iconUrl: "http://localhost:3002/item/category/2/image"
   },
   {
     id: "3",
@@ -218,7 +231,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades",
       }
     },
-    iconUrl: "http://localhost:3002/public/item_category/construction.png"
+    iconUrl: "http://localhost:3002/item/category/3/image"
   },
   {
     id: "4",
@@ -230,7 +243,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Quilogramas"
       }
     },
-    iconUrl: "http://localhost:3002/public/item_category/pet_items.png"
+    iconUrl: "http://localhost:3002/item/category/4/image"
   },
   {
     id: "5",
@@ -242,7 +255,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades"
       }
     },
-    iconUrl: "http://localhost:3002/public/item_category/medicine.png"
+    iconUrl: "http://localhost:3002/item/category/5/image"
   },
   {
     id: "6",
@@ -254,7 +267,7 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades"
       }
     },
-    iconUrl: "http://localhost:3002/public/item_category/medicine.png"
+    iconUrl: "http://localhost:3002/item/category/6/image"
   },
   {
     id: "7",
@@ -266,8 +279,19 @@ const itemCategories: Prisma.ItemCategoryCreateInput[] = [
         name: "Unidades"
       }
     },
-    iconUrl: "http://localhost:3002/public/item_category/hygiene.png"
+    iconUrl: "http://localhost:3002/item/category/7/image"
   },
+]
+
+
+const itemCategoriesImages: Photo[] = [
+  {id: "1", imagePath: "./images/item_category/non_perishable_food.png"},
+  {id: "2", imagePath: "./images/item_category/soft_clothes.png"},
+  {id: "3", imagePath: "./images/item_category/construction.png"},
+  {id: "4", imagePath: "./images/item_category/pet_items.png"},
+  {id: "5", imagePath: "./images/item_category/medicine.png"},
+  {id: "6", imagePath: "./images/item_category/medicine.png"},
+  {id: "7", imagePath: "./images/item_category/hygiene.png"},
 ]
 
 
@@ -370,7 +394,7 @@ async function createEntities() {
     try {
       const {zipcode, number} = e.places.create[0].place.create.address.create;
 
-      const cepInfo = await CepCoords.getByCep(zipcode);
+      const cepInfo = await CoordenadasDoCep.getByCep(zipcode);
 
       e.places.create[0].place.create.address.create = {
         latitude: cepInfo.lat,
@@ -395,13 +419,52 @@ async function createEntities() {
   }
 }
 
+type Photo = {
+  id: string;
+  imagePath: string;
+};
+
+
+async function uploadPhotos(s3: S3, bucket: string, dir: string, photos: Photo[]) {
+  for (const photo of photos) {
+    console.log(`Loading photo ${photo.imagePath} to upload to S3 on path ${dir}`)
+
+    const body = fs.readFileSync(photo.imagePath)
+    const imageType = await detectImageType(body)
+    const key = path.join(dir, photo.id)
+
+    const result = await s3.putObject({
+      Body: body,
+      ContentType: imageType.mime,
+      Key: key,
+      Bucket: bucket
+    })
+
+    console.log(`Uploaded photo ${photo.imagePath} to S3 in path ${key}`)
+  }
+}
+
+
+
 async function main() {
+  const s3 = new S3({
+    endpoint: "http://localhost:9000",
+    credentials: {
+      accessKeyId: "minioadmin",
+      secretAccessKey: "minioadmin"
+    },
+    forcePathStyle: true,
+  })
+
   console.log(`Start seeding ...`)
 
   await createRecords(itemMeasurement, prisma.itemMeasurement)
   await createRecords(itemCategories, prisma.itemCategory)
   await createEntities();
   await createRecords(needs, prisma.itemNeed)
+
+  await uploadPhotos(s3, "benito-images", "entity", entityImages)
+  await uploadPhotos(s3, "benito-images", "item-category", itemCategoriesImages)
 
   console.log(`Seeding finished.`)
 }
