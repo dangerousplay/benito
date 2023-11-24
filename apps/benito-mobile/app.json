@@ -27,6 +27,9 @@
           "apiKey": ""
         }
       },
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
       "package": "com.anonymous.reactnativeboilerplate"
     },
     "web": {
@@ -36,6 +39,13 @@
     "experiments": {
       "typedRoutes": true
     },
-    "plugins": ["@config-plugins/detox", "expo-router"]
+    "plugins": ["@config-plugins/detox", "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow benito to use your location."
+        }
+      ]
+    ]
   }
 }
