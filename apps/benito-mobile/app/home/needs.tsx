@@ -74,7 +74,7 @@ const Needs = () => {
     })
 
     const items = itemNeeds
-        ?.map(i => ({ ...i, iconUrl: i.category.iconUrl, places: i.entity.places }))
+        ?.map(i => ({ ...i, iconUrl: i.category.iconUrl, places: i.entity.places, title: i.name }))
     ?? []
 
     return (

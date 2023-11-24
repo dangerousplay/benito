@@ -13,7 +13,7 @@ const Entities = () => {
     const [filters, setFilters] = useState<Filters>({});
     const updateFilters = debounce(setFilters, 350);
 
-    const {data: organizations, isFetching} = useFindManyEntity({
+    const {data: organizationsData, isFetching} = useFindManyEntity({
         select: {
             id: true,
             name: true,
@@ -57,6 +57,8 @@ const Entities = () => {
     // const {data: entityCategories} = useFindManyTag({
     //     select: {name: true, id: true}
     // })
+
+    const organizations = organizationsData?.map(o => ({...o, title: o.name}))
 
     return (
         <CardMapList items={organizations}
