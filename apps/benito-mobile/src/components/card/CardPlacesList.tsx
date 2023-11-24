@@ -29,7 +29,9 @@ const ItemView = ({title, description, iconUrl, address, distance}: ItemViewProp
                 </SView>
             </SView>
 
-            <AddressView address={address} distance={distance}/>
+            <SView className={"pt-3"}>
+                <AddressView address={address} distance={distance}/>  
+            </SView>
 
         </SView>
     )
