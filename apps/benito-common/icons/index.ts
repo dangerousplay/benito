@@ -5,3 +5,6 @@ export * from './SearchSvg';
 export * from './Squares';
 export * from './CheckmarkSvg';
 export * from './UncheckedBoxSvg';
+export * from './ArrowLeftSvg';
+export * from './WorldGlobeSvg';
+export * from './PhoneSvg';
