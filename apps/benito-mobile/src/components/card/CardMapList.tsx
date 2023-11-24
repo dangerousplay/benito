@@ -5,11 +5,10 @@ import MapView, {Marker} from "react-native-maps";
 import {SearchInput} from "@/components/inputs";
 import CardSelector from "@/components/CardSelector";
 import {Image, Text} from "react-native";
-import * as Location from "expo-location";
-import {LocationAccuracy} from "expo-location";
 import {Place} from 'benito-common/hooks';
-import {findClosestAddress} from "benito-common/address";
 import {CardPlacesList} from "@/components/card/CardPlacesList";
+import {useGeolocation} from "@/geolocation";
+import {findClosestPlace} from "@/geolocation/places";
 
 
 export type MiddleFilterItem = {
@@ -38,6 +37,8 @@ export type CardMapListProps<T extends Item> = {
     items?: T[];
     afterSeachElement?: React.ReactElement;
 
+    onItemClick?: (i: Item) => void;
+
     isLoading?: boolean;
 
     markerClassName?: string;
@@ -49,26 +50,10 @@ export function CardMapList<T extends Item>({
                                    middleFilter,
                                    afterSeachElement,
                                    isLoading = false,
+                                   onItemClick,
                                    markerClassName = 'w-[50px] h-[50px]'
                                }: CardMapListProps<T>) {
-    const [position, setPosition] = useState<Location.LocationObjectCoords>();
-
-    useEffect(() => {
-        (async () => {
-
-            let { status } = await Location.requestForegroundPermissionsAsync();
-
-            if (status !== 'granted') {
-                return;
-            }
-
-            const subscription = await Location.watchPositionAsync({accuracy: LocationAccuracy.High}, location => {
-                setPosition(location.coords)
-            })
-
-            return () => subscription.remove()
-        })();
-    }, []);
+    const position = useGeolocation();
 
     const markers = items?.map(i => {
         return i.places
@@ -106,23 +91,11 @@ export function CardMapList<T extends Item>({
 
 
     const closestItems = items?.map(i => {
-        const addresses = i.places.map(p => p.place.address);
-
-        let closestAddress = addresses[0];
-
-        if (position) {
-            const coords = position;
-
-            const selfCoords = {lat: coords.latitude, lon: coords.longitude};
-            closestAddress = findClosestAddress(selfCoords, addresses)
-        }
+        const closestAddress = findClosestPlace(position, i.places)
 
         return {
-            title: i.name,
-            description: i.description,
-            iconUrl: i.iconUrl,
-            address: closestAddress,
-            distance: closestAddress.distance
+            ...i,
+            ...closestAddress
         }
     }) ?? []
 
@@ -155,7 +128,7 @@ export function CardMapList<T extends Item>({
                     horizontal={true} />
             </SView>}
 
-            <CardPlacesList items={closestItems} isLoading={isLoading}/>
+            <CardPlacesList items={closestItems} isLoading={isLoading} onItemClick={onItemClick}/>
         </Base>
     );
 }

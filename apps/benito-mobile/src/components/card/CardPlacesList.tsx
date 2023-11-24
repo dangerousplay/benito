@@ -1,10 +1,9 @@
 import {ActivityIndicator, TouchableOpacity} from "react-native";
 import {SFlatList, SImage, SText, SView} from "@/components/core";
 import React from "react";
-import {CompassIcon, PinIcon} from "benito-common/icons";
-import {formatAddress} from "benito-common/address";
-import {formatDistance, sortByClosest} from "benito-common/geolocation";
+import {sortByClosest} from "benito-common/geolocation";
 import {Address} from "benito-common/hooks";
+import {AddressView} from "@/components";
 
 
 type ItemViewProps = {
@@ -30,17 +29,8 @@ const ItemView = ({title, description, iconUrl, address, distance}: ItemViewProp
                 </SView>
             </SView>
 
-            <SView className={"flex-row items-center gap-x-8 pt-3"}>
-                <SView className={"flex-row items-center gap-x-1 w-[60%]"}>
-                    <PinIcon />
-                    <SText className={"font-light"}>{formatAddress(address)}</SText>
-                </SView>
+            <AddressView address={address} distance={distance}/>
 
-                {distance && <SView className={"flex-row items-center gap-x-1"}>
-                    <CompassIcon />
-                    <SText className={"font-light"}>{formatDistance(distance)}</SText>
-                </SView>}
-            </SView>
         </SView>
     )
 }
@@ -49,10 +39,12 @@ const ItemView = ({title, description, iconUrl, address, distance}: ItemViewProp
 export type CardPlacesListProps = {
     items: ItemViewProps[]
 
+    onItemClick?: (i: ItemViewProps) => void;
+
     isLoading?: boolean;
 };
 
-export function CardPlacesList({items, isLoading}: Readonly<CardPlacesListProps>) {
+export function CardPlacesList({items, isLoading, onItemClick = (_) => {}}: Readonly<CardPlacesListProps>) {
     sortByClosest(items);
 
     if (isLoading) {
@@ -67,7 +59,7 @@ export function CardPlacesList({items, isLoading}: Readonly<CardPlacesListProps>
         <SFlatList
           data={items}
           renderItem={i =>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={_ => onItemClick(i.item)}>
                 <ItemView {...i.item} />
             </TouchableOpacity>
           }
