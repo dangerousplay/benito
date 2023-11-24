@@ -21,3 +21,8 @@ export function findClosestAddress(coords: Coordinates, addresses: Address[] ): 
 export function formatAddress(address: Address): string {
     return `${address.street} ${address.number}, ${address.city}, ${address.region}`
 }
+
+export function formatHour(hour: number): string {
+    const text = hour.toFixed(0).padStart(4, "0")
+    return `${text.slice(0, 2)}:${text.slice(2, 4)}`
+}
