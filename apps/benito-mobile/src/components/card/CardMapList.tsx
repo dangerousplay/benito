@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Base} from "@/components/base";
 import {SImage, SView} from "@/components/core";
 import MapView, {Marker} from "react-native-maps";
 import {SearchInput} from "@/components/inputs";
 import CardSelector from "@/components/CardSelector";
-import {Image, Text} from "react-native";
+import {ActivityIndicator, Image, Text} from "react-native";
 import {Place} from 'benito-common/hooks';
 import {CardPlacesList} from "@/components/card/CardPlacesList";
 import {useGeolocation} from "@/geolocation";
 import {findClosestPlace} from "@/geolocation/places";
+import {Camera} from "react-native-maps/lib/MapView.types";
 
 
 export type MiddleFilterItem = {
@@ -42,6 +43,8 @@ export type CardMapListProps<T extends Item> = {
     isLoading?: boolean;
 
     markerClassName?: string;
+    
+    initialCamera?: Camera;
 }
 
 
@@ -51,6 +54,7 @@ export function CardMapList<T extends Item>({
                                    afterSeachElement,
                                    isLoading = false,
                                    onItemClick,
+                                   initialCamera,
                                    markerClassName = 'w-[50px] h-[50px]'
                                }: CardMapListProps<T>) {
     const position = useGeolocation();
@@ -102,9 +106,18 @@ export function CardMapList<T extends Item>({
     return (
         <Base>
             <SView className={"w-full mt-4"}>
-                <MapView style={{ height: 200 }} >
+                {position && <MapView style={{ height: 200 }}
+                                      initialCamera={{
+                                          center: position,
+                                          heading: 0, zoom: 12,
+                                          pitch: 0, altitude: 500,
+                                          ...initialCamera
+                                      }}
+                >
                     {markers}
-                </MapView>
+                </MapView>}
+
+                {!position && <ActivityIndicator size={"large"}/>}
             </SView>
 
             <SView className={'m-4 my-6'}>
