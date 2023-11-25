@@ -57,7 +57,7 @@ export function CardMapList<T extends Item>({
                                    initialCamera,
                                    markerClassName = 'w-[50px] h-[50px]'
                                }: CardMapListProps<T>) {
-    const position = useGeolocation();
+    const [position, setPosition] = useGeolocation();
 
     const markers = items?.map(i => {
         return i.places

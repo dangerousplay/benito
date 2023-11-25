@@ -23,5 +23,5 @@ export const useGeolocation = () => {
         })();
     }, []);
     
-    return position
+    return [position, setPosition]
 }

@@ -63,7 +63,7 @@ const EntityView = ({ entity, closestAddrres }: EntityViewProps) => {
 export default function EntityScreen() {
     const { slug } = useLocalSearchParams();
 
-    const position = useGeolocation();
+    const [position, _] = useGeolocation();
 
     const {data: entity, isFetching} = useFindUniqueEntity({
         select: {
