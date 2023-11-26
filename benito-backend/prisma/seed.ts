@@ -453,6 +453,7 @@ async function main() {
       accessKeyId: "minioadmin",
       secretAccessKey: "minioadmin"
     },
+    region: "sa-east-1",
     forcePathStyle: true,
   })
 
