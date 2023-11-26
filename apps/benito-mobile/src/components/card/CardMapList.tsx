@@ -45,6 +45,7 @@ export type CardMapListProps<T extends Item> = {
     markerClassName?: string;
     
     initialCamera?: Camera;
+    afterText?: (_: any) => React.ReactElement;
 }
 
 
@@ -55,7 +56,8 @@ export function CardMapList<T extends Item>({
                                    isLoading = false,
                                    onItemClick,
                                    initialCamera,
-                                   markerClassName = 'w-[50px] h-[50px]'
+                                   markerClassName = 'w-[50px] h-[50px]',
+                                   afterText
                                }: CardMapListProps<T>) {
     const [position, setPosition] = useGeolocation();
 
@@ -143,7 +145,7 @@ export function CardMapList<T extends Item>({
                     horizontal={true} />
             </SView>}
 
-            <CardPlacesList items={closestItems} isLoading={isLoading} onItemClick={onItemClick}/>
+            <CardPlacesList items={closestItems} isLoading={isLoading} onItemClick={onItemClick} afterText={afterText}/>
         </Base>
     );
 }

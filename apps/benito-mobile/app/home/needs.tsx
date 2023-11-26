@@ -4,7 +4,8 @@ import {useState} from "react";
 
 import debounce from "lodash.debounce"
 import {CardMapList} from "@/components/card";
-
+import {Bar} from 'react-native-progress';
+import {SView} from "@/components/core";
 
 type Filters = {
   name?: string;
@@ -23,6 +24,8 @@ const Needs = () => {
         select: {
             name: true,
             description: true,
+            currentAcquired: true,
+            minimum: true,
             entity: {
                 select: {
                     id: true,
@@ -89,6 +92,13 @@ const Needs = () => {
                          items: itemCategories
                      }}
                      isLoading={isFetching}
+                     afterText={s => 
+                        {s.minimum && s.minimum > 0 && 
+                          <SView>
+                            <Bar progress={s.currentAcquired/s.minimum} width={null} /> 
+                          </SView>
+                        }
+                    }
         />
     )
 };

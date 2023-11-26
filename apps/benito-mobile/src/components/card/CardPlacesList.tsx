@@ -5,7 +5,6 @@ import {sortByClosest} from "benito-common/geolocation";
 import {Address} from "benito-common/hooks";
 import {AddressView} from "@/components";
 import { WorkingTime } from "../WorkingTime";
-import {Place} from 'benito-common/hooks';
 
 
 
@@ -17,9 +16,11 @@ type ItemViewProps = {
     closesAt: number;
     address: Address;
     distance?: number;
+    afterText?: (_: any) => React.ReactElement;
+
 };
 
-const ItemView = ({title, description, iconUrl, address, distance, opensAt, closesAt}: ItemViewProps) => {
+const ItemView = ({title, description, iconUrl, address, distance, opensAt, closesAt, afterText, ...props}: ItemViewProps) => {
     return (
         <SView className={"bg-white rounded-2xl p-3 mt-4"}>
             <SView className={"flex-row items-center space-x-4"}>
@@ -32,7 +33,7 @@ const ItemView = ({title, description, iconUrl, address, distance, opensAt, clos
                     <SText className={"font-light"}>{description}</SText>
                 </SView>
             </SView>
-
+            {afterText && afterText(props)}
             <SView className={"pt-3"}>
                 <WorkingTime opensAt={opensAt} closesAt={closesAt} />
                 <AddressView address={address} distance={distance}/>  
@@ -45,13 +46,14 @@ const ItemView = ({title, description, iconUrl, address, distance, opensAt, clos
 
 export type CardPlacesListProps = {
     items: ItemViewProps[]
-
+    afterText?: (_: any) => React.ReactElement;
+    
     onItemClick?: (i: ItemViewProps) => void;
 
     isLoading?: boolean;
 };
 
-export function CardPlacesList({items, isLoading, onItemClick = (_) => {}}: Readonly<CardPlacesListProps>) {
+export function CardPlacesList({items, afterText, isLoading, onItemClick = (_) => {}}: Readonly<CardPlacesListProps>) {
     sortByClosest(items);
 
     if (isLoading) {
@@ -67,7 +69,7 @@ export function CardPlacesList({items, isLoading, onItemClick = (_) => {}}: Read
           data={items}
           renderItem={i =>
             <TouchableOpacity onPress={_ => onItemClick(i.item)}>
-                <ItemView {...i.item} />
+                <ItemView {...i.item} afterText = {afterText} />
             </TouchableOpacity>
           }
           className={"mx-4"}
