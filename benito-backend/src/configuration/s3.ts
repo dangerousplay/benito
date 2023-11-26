@@ -9,6 +9,7 @@ export class S3Configuration {
     accessKey: string
     secretKey: string
     endpoint: string
+    region: string
 
     constructor(config: any) {
         this.fileMaxSize = config?.fileMaxSize
@@ -16,6 +17,7 @@ export class S3Configuration {
         this.accessKey = config?.accessKey
         this.secretKey = config?.secretKey
         this.endpoint = config?.endpoint
+        this.region = config?.region
     }
 }
 
@@ -26,6 +28,7 @@ const loadS3Configuration = (conf: ConfigService): S3Configuration => {
         accessKey: conf.get('S3_ACCESS_KEY'),
         secretKey: conf.get('S3_SECRET_KEY'),
         endpoint: conf.get('S3_ENDPOINT'),
+        region: conf.get('S3_REGION'),
     })
 };
 
@@ -56,6 +59,7 @@ export const S3ModuleConf = S3Module.forRootAsync({
                 },
                 // region: 'us-east-1',
                 endpoint: s3Config.endpoint,
+                region: s3Config.region,
                 forcePathStyle: true,
                 signatureVersion: 'v4',
             },
