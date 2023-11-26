@@ -76,6 +76,10 @@ const Needs = () => {
     const items = itemNeeds
         ?.map(i => ({ ...i, iconUrl: i.category.iconUrl, places: i.entity.places, title: i.name }))
     ?? []
+    if(items?.length>0){
+
+        console.log("IIIIIIIIIIIITEEEEEMMMMMMMMMMMMMMSSSSSS: ",items[0].places[0].place)
+    }
 
     return (
         <CardMapList items={items}

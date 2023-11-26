@@ -103,6 +103,8 @@ export function CardMapList<T extends Item>({
         }
     }) ?? []
 
+    console.log("CLOSESSSTT PLACESS", closestItems)
+
     return (
         <Base>
             <SView className={"w-full mt-4"}>

@@ -21,6 +21,8 @@ export const findClosestPlace = (position: Location.LocationObjectCoords, places
 
     return {
         address: closestAddress,
-        distance: closestAddress.distance
+        distance: closestAddress.distance,
+        opensAt: closestAddress.opensAt,
+        closesAt: closestAddress.closesAt
     }
 }

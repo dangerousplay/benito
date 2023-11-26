@@ -4,32 +4,41 @@ import React from "react";
 import {sortByClosest} from "benito-common/geolocation";
 import {Address} from "benito-common/hooks";
 import {AddressView} from "@/components";
+import { WorkingTime } from "../WorkingTime";
+import {Place} from 'benito-common/hooks';
+
 
 
 type ItemViewProps = {
     title: string;
     description: string;
     iconUrl: string;
-
+    opensAt: number;
+    closesAt: number;
     address: Address;
     distance?: number;
 };
+// console.log("PLAAACEEEEEEE", place)
 
-const ItemView = ({title, description, iconUrl, address, distance}: ItemViewProps) => {
+const ItemView = ({title, description, iconUrl, address, distance, opensAt, closesAt}: ItemViewProps) => {
     return (
         <SView className={"bg-white rounded-2xl p-3 mt-4"}>
             <SView className={"flex-row items-center space-x-4"}>
                 <SView className={"justify-center"}>
+                
                     <SImage source={{uri: iconUrl}} width={60} height={60}/>
                 </SView>
 
                 <SView className={"mr-14"}>
+                
                     <SText className={"text-xl leading-normal"}>{title}</SText>
                     <SText className={"font-light"}>{description}</SText>
+
                 </SView>
             </SView>
 
             <SView className={"pt-3"}>
+                <WorkingTime opensAt={opensAt} closesAt={closesAt} />
                 <AddressView address={address} distance={distance}/>  
             </SView>
 
