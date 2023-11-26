@@ -457,6 +457,8 @@ async function main() {
     forcePathStyle: true,
   })
 
+  console.log("updated")
+
   console.log(`Start seeding ...`)
 
   await createRecords(itemMeasurement, prisma.itemMeasurement)

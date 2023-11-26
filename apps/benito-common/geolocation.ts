@@ -138,7 +138,7 @@ type PlaceDistance = {
 };
 
 export function sortByClosest(places: PlaceDistance[]) {
-    places.sort((a, b) => {
+    return places.sort((a, b) => {
         if (!a.distance)
             return 0;
 

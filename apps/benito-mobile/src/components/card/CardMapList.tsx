@@ -143,7 +143,11 @@ export function CardMapList<T extends Item>({
                     horizontal={true} />
             </SView>}
 
-            <CardPlacesList items={closestItems} isLoading={isLoading} onItemClick={onItemClick}/>
+            <CardPlacesList items={closestItems} 
+                            isLoading={isLoading} 
+                            onItemClick={onItemClick}
+                            classes={middleFilter ? 'max-h-[48%]' : undefined}
+            />
         </Base>
     );
 }

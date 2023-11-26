@@ -3,6 +3,7 @@ import {useFindManyEntity} from "benito-common/hooks";
 import {useState} from "react";
 import debounce from "lodash.debounce"
 import { router } from 'expo-router';
+import {clampString} from "benito-common/clamp";
 
 
 type Filters = {
@@ -59,7 +60,7 @@ const Entities = () => {
     //     select: {name: true, id: true}
     // })
 
-    const organizations = organizationsData?.map(o => ({...o, title: o.name}))
+    const organizations = organizationsData?.map(o => ({...o, title: o.name, description: clampString(o.description, 160)}))
 
     return (
         <CardMapList items={organizations}
