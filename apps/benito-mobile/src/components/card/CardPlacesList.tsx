@@ -18,22 +18,18 @@ type ItemViewProps = {
     address: Address;
     distance?: number;
 };
-// console.log("PLAAACEEEEEEE", place)
 
 const ItemView = ({title, description, iconUrl, address, distance, opensAt, closesAt}: ItemViewProps) => {
     return (
         <SView className={"bg-white rounded-2xl p-3 mt-4"}>
             <SView className={"flex-row items-center space-x-4"}>
                 <SView className={"justify-center"}>
-                
                     <SImage source={{uri: iconUrl}} width={60} height={60}/>
                 </SView>
 
                 <SView className={"mr-14"}>
-                
                     <SText className={"text-xl leading-normal"}>{title}</SText>
                     <SText className={"font-light"}>{description}</SText>
-
                 </SView>
             </SView>
 
@@ -41,6 +37,7 @@ const ItemView = ({title, description, iconUrl, address, distance, opensAt, clos
                 <WorkingTime opensAt={opensAt} closesAt={closesAt} />
                 <AddressView address={address} distance={distance}/>  
             </SView>
+
         </SView>
     )
 }
@@ -52,16 +49,11 @@ export type CardPlacesListProps = {
     onItemClick?: (i: ItemViewProps) => void;
 
     isLoading?: boolean;
-    
-    classes?: string;
 };
 
-export function CardPlacesList({
-                                   items,
-                                   isLoading,
-                                   onItemClick = (_) => {},
-                                   classes = "max-h-[63%]"
-                                }: Readonly<CardPlacesListProps>) {
+export function CardPlacesList({items, isLoading, onItemClick = (_) => {}}: Readonly<CardPlacesListProps>) {
+    sortByClosest(items);
+
     if (isLoading) {
         return (
             <SView className={"justify-center items-center pt-10"}>
@@ -70,18 +62,15 @@ export function CardPlacesList({
         )
     }
 
-    const sortedItems = sortByClosest(items);
-
     return (
         <SFlatList
-          data={sortedItems}
+          data={items}
           renderItem={i =>
-            <TouchableOpacity onPress={_ => onItemClick(i.item)} key={i.item.id}>
+            <TouchableOpacity onPress={_ => onItemClick(i.item)}>
                 <ItemView {...i.item} />
             </TouchableOpacity>
           }
-          initialNumToRender={sortedItems.length}
-          className={`mx-4 ${classes}`}
+          className={"mx-4"}
        />
     )
 }
