@@ -242,6 +242,7 @@ model ItemMeasurement {
 
   @@allow('all', auth().role == ADMIN)
   @@allow('read', true)
+  @@allow('all', true)
 }
 
 model ItemCategory {
@@ -260,6 +261,7 @@ model ItemCategory {
 
   @@allow('all', auth().role == ADMIN)
   @@allow('read', true)
+  @@allow('all', true)
 }
 
 model ItemNeed {
@@ -275,11 +277,6 @@ model ItemNeed {
   entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
   entityId String
 
-  campaing Campaing? @relation(fields: [campaingId], references: [id], onDelete: Cascade)
-  campaingId String?
-
-  urgency Urgency
-
   minimum Int? @gt(0)
   currentAcquired Int? @gte(0)
 
@@ -288,6 +285,7 @@ model ItemNeed {
 
   @@allow('all', auth().role == ADMIN)
   @@allow('read', active)
+  @@allow('all', true)
 }
 
 model Campaing {
@@ -300,8 +298,6 @@ model Campaing {
 
   entity Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
   entityId String
-
-  needs ItemNeed[]
 
   active Boolean
   completed Boolean

@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Urgency } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 
 import {S3} from '@aws-sdk/client-s3';
 import * as fs from 'fs';
@@ -311,7 +311,6 @@ const needs: Prisma.ItemNeedCreateInput[] = [
         id: "1"
       }
     },
-    urgency: Urgency.LOW,
     completed: false,
     active: true,
   },
@@ -329,7 +328,6 @@ const needs: Prisma.ItemNeedCreateInput[] = [
         id: "2"
       }
     },
-    urgency: Urgency.LOW,
     completed: false,
     active: true,
   },
@@ -347,7 +345,6 @@ const needs: Prisma.ItemNeedCreateInput[] = [
         id: "3"
       }
     },
-    urgency: Urgency.LOW,
     completed: false,
     active: true,
   },
@@ -365,7 +362,6 @@ const needs: Prisma.ItemNeedCreateInput[] = [
         id: "4"
       }
     },
-    urgency: Urgency.LOW,
     completed: false,
     active: true,
   },
@@ -458,6 +454,18 @@ async function main() {
   })
 
   console.log("updated")
+
+  await prisma.itemNeed.create({
+        data: {
+          "active": true,
+          "category": {"connect": {"id": "1"}},
+          "completed": false, "currentAcquired": 0,
+          "description": "Ajuda", "entity": {"connect": {"id": "2"}},
+          "minimum": undefined,
+          "name": "Ajuda"
+        }
+      }
+  )
 
   console.log(`Start seeding ...`)
 
