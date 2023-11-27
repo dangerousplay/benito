@@ -1,4 +1,4 @@
-import {useLocalSearchParams} from 'expo-router';
+import {useLocalSearchParams, router} from 'expo-router';
 import {ActivityIndicator} from 'react-native';
 import {Base} from "@/components/base";
 import {TopBar} from "@/components/TopBar";
@@ -10,7 +10,6 @@ import {AddressView, Button, WorkingTime} from "@/components";
 import React from "react";
 import {PhoneIcon, WorldGlobeIcon} from "benito-common/icons";
 import {ClockIcon} from "benito-common/icons/ClockSvg";
-import { router } from 'expo-router';
 
 
 type EntityViewProps = {
@@ -27,7 +26,7 @@ const EntityView = ({ entity, closestAddrres }: EntityViewProps) => {
             <SView>
                 <SView className={"flex flex-row items-center gap-x-8"}>
                     <SImage source={{ uri: entity.iconUrl }} className={"w-16 h-16"}/>
-                    <SText className={"text-center text-lg font-medium"}>{entity.name}</SText>
+                    <SText className={"text-center text-lg font-medium max-w-[80%]"}>{entity.name}</SText>
                 </SView>
 
                 <SText className={"mt-4 text-justify"} style={{ lineHeight: 20 }}>
@@ -89,7 +88,7 @@ export default function EntityScreen() {
 
     return (
         <Base className={"bg-white"}>
-            <TopBar title={"Lista de organizações"} />
+            <TopBar title={"Organização"} />
 
             <SView className={"mx-4"}>
                 {isFetching ?
@@ -99,7 +98,7 @@ export default function EntityScreen() {
                 <SView className={"mt-6"}>
                     <Button variant={"secondary"}
                             beforeElement={<ClockIcon className={"mr-2"}/>}
-                    onClick={() => router.push(`/entities/${slug}/needs`)}>
+                    onClick={() => router.push(`/entities/${slug}/needs/list`)}>
                         Necessidades
                     </Button>
                 </SView>
