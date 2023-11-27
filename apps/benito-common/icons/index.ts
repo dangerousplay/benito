@@ -8,3 +8,4 @@ export * from './UncheckedBoxSvg';
 export * from './ArrowLeftSvg';
 export * from './WorldGlobeSvg';
 export * from './PhoneSvg';
+export * from './EditSvg';
