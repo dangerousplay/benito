@@ -10,7 +10,7 @@ export default function Layout() {
   return (
       <QueryClientProvider client={queryClient}>
         <ZenStackHooksProvider value={{ endpoint: 'http://10.0.2.2:3002/api/model' }}>
-           <Stack screenOptions={{ headerShown: false }} />
+           <Stack screenOptions={{ headerShown: false }} initialRouteName={"/home"}/>
         </ZenStackHooksProvider>
       </QueryClientProvider>
   );
