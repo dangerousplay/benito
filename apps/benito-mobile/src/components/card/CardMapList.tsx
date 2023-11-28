@@ -105,7 +105,7 @@ export function CardMapList<T extends Item>({
         }
     }) ?? []
 
-    
+    const listClassName = middleFilter ? "h-[47%]" : "h-[62%]";
 
     return (
         <Base>
@@ -145,7 +145,12 @@ export function CardMapList<T extends Item>({
                     horizontal={true} />
             </SView>}
 
-            <CardPlacesList items={closestItems} isLoading={isLoading} onItemClick={onItemClick} afterText={afterText}/>
+            <CardPlacesList
+                items={closestItems}
+                isLoading={isLoading}
+                onItemClick={onItemClick}
+                afterText={afterText}
+                classesName={listClassName} />
         </Base>
     );
 }

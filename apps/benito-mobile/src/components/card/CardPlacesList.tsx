@@ -33,7 +33,9 @@ const ItemView = ({title, description, iconUrl, address, distance, opensAt, clos
                     <SText className={"font-light"}>{description}</SText>
                 </SView>
             </SView>
+            
             {afterText && afterText(props)}
+            
             <SView className={"pt-3"}>
                 <WorkingTime opensAt={opensAt} closesAt={closesAt} />
                 <AddressView address={address} distance={distance}/>  
@@ -51,9 +53,15 @@ export type CardPlacesListProps = {
     onItemClick?: (i: ItemViewProps) => void;
 
     isLoading?: boolean;
+    classesName?: string;
 };
 
-export function CardPlacesList({items, afterText, isLoading, onItemClick = (_) => {}}: Readonly<CardPlacesListProps>) {
+export function CardPlacesList({   items,
+                                   afterText,
+                                   isLoading,
+                                   classesName = '',
+                                   onItemClick = (_) => {}}
+                                   : Readonly<CardPlacesListProps>) {
     sortByClosest(items);
 
     if (isLoading) {
@@ -68,11 +76,11 @@ export function CardPlacesList({items, afterText, isLoading, onItemClick = (_) =
         <SFlatList
           data={items}
           renderItem={i =>
-            <TouchableOpacity onPress={_ => onItemClick(i.item)}>
+            <TouchableOpacity onPress={_ => onItemClick(i.item)} key={i.item.id}>
                 <ItemView {...i.item} afterText = {afterText} />
             </TouchableOpacity>
           }
-          className={"mx-4"}
+          className={`mx-4 ${classesName}`}
        />
     )
 }
