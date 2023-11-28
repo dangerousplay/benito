@@ -79,8 +79,6 @@ const Needs = () => {
     const items = itemNeeds
         ?.map(i => ({ ...i, iconUrl: i.category.iconUrl, places: i.entity.places, title: i.name }))
     ?? []
-    if(items?.length>0){
-    }
 
     return (
         <CardMapList items={items}
@@ -93,8 +91,8 @@ const Needs = () => {
                      }}
                      isLoading={isFetching}
                      afterText={s => 
-                        {s.minimum && s.minimum > 0 && 
-                          <SView>
+                        { return s.minimum && s.minimum > 0 &&
+                          <SView className={"mt-3"} >
                             <Bar progress={s.currentAcquired/s.minimum} width={null} /> 
                           </SView>
                         }

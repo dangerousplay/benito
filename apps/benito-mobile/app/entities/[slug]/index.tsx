@@ -8,7 +8,7 @@ import {useGeolocation} from "@/geolocation";
 import {findClosestPlace} from "@/geolocation/places";
 import {AddressView, Button, WorkingTime} from "@/components";
 import React from "react";
-import {PhoneIcon, WorldGlobeIcon} from "benito-common/icons";
+import {PhoneIcon, UsersIcon, WorldGlobeIcon} from "benito-common/icons";
 import {ClockIcon} from "benito-common/icons/ClockSvg";
 
 
@@ -78,6 +78,17 @@ export default function EntityScreen() {
                     }
                 }
             },
+            users: {
+                select: {
+                    role: true,
+                    user: {
+                        select: {
+                            id: true,
+                            iconUrl: true
+                        }
+                    }
+                }
+            }
         },
         where: {
             id: slug
@@ -97,9 +108,17 @@ export default function EntityScreen() {
 
                 <SView className={"mt-6"}>
                     <Button variant={"secondary"}
-                            beforeElement={<ClockIcon className={"mr-2"}/>}
+                            beforeElement={<ClockIcon className={"mr-2"} width={35} height={35}/>}
                     onClick={() => router.push(`/entities/${slug}/needs/list`)}>
                         Necessidades
+                    </Button>
+                </SView>
+
+                <SView className={"mt-6"}>
+                    <Button variant={"secondary"}
+                            beforeElement={<UsersIcon className={"mr-2 w-10"} width={35} height={35}/>}
+                            onClick={() => router.push(`/entities/${slug}/users/list`)}>
+                        Voluntários da organização
                     </Button>
                 </SView>
                 

@@ -50,6 +50,7 @@
     "@zenstackhq/runtime": "1.2.1",
     "@zenstackhq/server": "^1.2.1",
     "@zenstackhq/tanstack-query": "^1.2.1",
+    "bcrypt": "^5.1.1",
     "coordenadas-do-cep": "^1.2.0",
     "image-type": "^5.2.0",
     "multer": "1.4.5-lts.1",

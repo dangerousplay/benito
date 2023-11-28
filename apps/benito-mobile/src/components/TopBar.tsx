@@ -13,9 +13,11 @@ export const TopBar = ({ title }: TopBarProps) => {
 
     return (
         <SView className="flex-row justify-between items-center p-4">
-            <TouchableOpacity onPress={(_) => navigation.goBack()}><ArrowLeftIcon /></TouchableOpacity>
+            <TouchableOpacity onPress={(_) => navigation.goBack()}>
+                <ArrowLeftIcon height={36} width={36}/>
+            </TouchableOpacity>
             <SText className="text-center text-lg font-semibold">{title}</SText>
-            <SView className="w-6 h-6"></SView>
+            <SView className="w-8 h-8"></SView>
         </SView>
     )
 }

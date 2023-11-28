@@ -28,6 +28,46 @@ const upsertEntityTag = (name: string) => {
 }
 
 
+const users: Prisma.UserCreateInput[] = [
+  {
+    id: "1",
+    name: "Alice",
+    lastName: "Martens",
+    password: "12345678",
+    email: "alice@email.com",
+    birthDate: "26/11/2000",
+    iconUrl: ""
+  },
+  {
+    id: "2",
+    name: "Bob",
+    lastName: "Speck",
+    password: "12345678",
+    email: "bob@email.com",
+    birthDate: "26/12/2000",
+    iconUrl: ""
+  },
+  {
+    id: "3",
+    name: "Luca",
+    lastName: "Colins",
+    password: "12345678",
+    email: "luca@email.com",
+    birthDate: "26/04/2000",
+    iconUrl: ""
+  },
+  {
+    id: "4",
+    name: "Roger",
+    lastName: "Williams",
+    password: "12345678",
+    email: "roger@email.com",
+    birthDate: "26/09/2000",
+    iconUrl: ""
+  }
+]
+
+
 const entities: Prisma.EntityCreateInput[] = [
   {
     id: "1",
@@ -58,6 +98,16 @@ const entities: Prisma.EntityCreateInput[] = [
           }
         }
       }]
+    },
+    users: {
+      create: {
+        user: {
+          connect: {
+            id: "1"
+          }
+        },
+        role: "MANAGER",
+      }
     },
     tags: upsertEntityTag("Refeições")
   },
@@ -90,6 +140,16 @@ const entities: Prisma.EntityCreateInput[] = [
           }
         }
       }]
+    },
+    users: {
+      create: {
+        user: {
+          connect: {
+            id: "2"
+          }
+        },
+        role: "MANAGER",
+      }
     },
     tags: upsertEntityTag("Refeição")
   },
@@ -453,24 +513,11 @@ async function main() {
     forcePathStyle: true,
   })
 
-  console.log("updated")
-
-  await prisma.itemNeed.create({
-        data: {
-          "active": true,
-          "category": {"connect": {"id": "1"}},
-          "completed": false, "currentAcquired": 0,
-          "description": "Ajuda", "entity": {"connect": {"id": "2"}},
-          "minimum": undefined,
-          "name": "Ajuda"
-        }
-      }
-  )
-
   console.log(`Start seeding ...`)
 
   await createRecords(itemMeasurement, prisma.itemMeasurement)
   await createRecords(itemCategories, prisma.itemCategory)
+  await createRecords(users, prisma.user)
   await createEntities();
   await createRecords(needs, prisma.itemNeed)
 

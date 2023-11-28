@@ -7,6 +7,10 @@ const variants = {
         button: "bg-blue-500",
         text: "text-white text-xl",
     },
+    danger: {
+        button: "bg-red-500",
+        text: "text-white text-xl",
+    },
     secondary: {
         button: "bg-white",
         text: "text-black text-xl",
@@ -17,7 +21,7 @@ export type ButtonProps = {
     beforeElement?: React.ReactElement
     afterElement?: React.ReactElement
     variant: string
-    className?: string;
+    classesName?: string;
     onClick?: () => void;
 }
 
@@ -27,14 +31,14 @@ export const Button = ({
                            onClick = () => {},
                            children,
                            variant = "primary",
-                           className = ''
+                           classesName = ''
                        }: React.PropsWithChildren<ButtonProps>) => {
     
     const variantClassName = variants[variant]
     
     return (
         <TouchableOpacity onPress={(_) => onClick()}
-                          className={`p-3 rounded-2xl items-center justify-center flex-row ${variantClassName.button} ${className}`}>
+                          className={`p-3 rounded-2xl items-center justify-center flex-row ${variantClassName.button} ${classesName}`}>
             {beforeElement}
 
             <SText className={`${variantClassName.text}`}>

@@ -10,7 +10,7 @@ export type WorkingTimeProps = {
     workingDays: number[]
 }
 
-export const WorkingTime = ({opensAt, closesAt}: WorkingTimeProps) => {
+export const WorkingTime = ({opensAt = 0, closesAt = 0}: WorkingTimeProps) => {
     return (
         <SView className={"flex-row items-center space-x-1"}>
             <ClockIcon />

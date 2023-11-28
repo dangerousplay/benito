@@ -9,3 +9,6 @@ export * from './ArrowLeftSvg';
 export * from './WorldGlobeSvg';
 export * from './PhoneSvg';
 export * from './EditSvg';
+export * from './UsersSvg';
+export * from './TrashSvg';
+export * from './UserAvatarSvg';
