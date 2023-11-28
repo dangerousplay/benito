@@ -1,10 +1,14 @@
-import { Login } from './login';
+import {ActivityIndicator} from "react-native";
+import {useEffect} from "react";
+import {router} from "expo-router";
 
 const Root = () => {
+    useEffect(() => {
+        router.push('/home')
+    }, []);
+
     return (
-        <>
-            <Login />
-        </>
+        <ActivityIndicator size={"large"} />
     );
 }
 

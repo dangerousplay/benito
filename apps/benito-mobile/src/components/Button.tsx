@@ -38,7 +38,7 @@ export const Button = ({
     
     return (
         <TouchableOpacity onPress={(_) => onClick()}
-                          className={`p-3 rounded-2xl items-center justify-center flex-row ${variantClassName.button} ${classesName}`}>
+                          className={`p-1 rounded-2xl items-center justify-center flex-row ${variantClassName.button} ${classesName}`}>
             {beforeElement}
 
             <SText className={`${variantClassName.text}`}>
