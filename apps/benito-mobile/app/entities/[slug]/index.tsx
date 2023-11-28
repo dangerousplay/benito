@@ -107,7 +107,7 @@ export default function EntityScreen() {
 
                 <SView className={"mt-6"}>
                     <Button variant={"secondary"}
-                            beforeElement={<HandHeartIcon className={"mr-2"} width={35} height={35}/>}
+                            beforeElement={<HandHeartIcon className={"mr-2"} width={30} height={30}/>}
                     onClick={() => router.push(`/entities/${slug}/needs/list`)}>
                         Necessidades
                     </Button>
