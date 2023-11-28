@@ -5,7 +5,12 @@ import {useState} from "react";
 import debounce from "lodash.debounce"
 import {CardMapList} from "@/components/card";
 import {Bar} from 'react-native-progress';
-import {SView} from "@/components/core";
+import {SText, SView} from "@/components/core";
+
+
+const formatProgress = (p: number) => {
+    return (p * 100).toFixed(0)
+}
 
 type Filters = {
   name?: string;
@@ -90,10 +95,15 @@ const Needs = () => {
                          items: itemCategories
                      }}
                      isLoading={isFetching}
-                     afterText={s => 
-                        { return s.minimum && s.minimum > 0 &&
-                          <SView className={"mt-3"} >
-                            <Bar progress={s.currentAcquired/s.minimum} width={null} /> 
+                     afterText={s => {
+                         const progress = s.currentAcquired/s.minimum
+
+                         return s.minimum && s.minimum > 0 &&
+                          <SView className={"mt-3 justify-center"} >
+                            <Bar progress={progress} unfilledColor={"#8ebff6"} height={15} width={null} />
+                            <SText className={"absolute font-bold text-white pl-[50%]"}>
+                                {formatProgress(progress)}%
+                            </SText>
                           </SView>
                         }
                     }
