@@ -8,8 +8,7 @@ import {useGeolocation} from "@/geolocation";
 import {findClosestPlace} from "@/geolocation/places";
 import {AddressView, Button, WorkingTime} from "@/components";
 import React from "react";
-import {PhoneIcon, UsersIcon, WorldGlobeIcon} from "benito-common/icons";
-import {ClockIcon} from "benito-common/icons/ClockSvg";
+import {HandHeartIcon, PhoneIcon, UsersIcon, WorldGlobeIcon} from "benito-common/icons";
 
 
 type EntityViewProps = {
@@ -108,7 +107,7 @@ export default function EntityScreen() {
 
                 <SView className={"mt-6"}>
                     <Button variant={"secondary"}
-                            beforeElement={<ClockIcon className={"mr-2"} width={35} height={35}/>}
+                            beforeElement={<HandHeartIcon className={"mr-2"} width={35} height={35}/>}
                     onClick={() => router.push(`/entities/${slug}/needs/list`)}>
                         Necessidades
                     </Button>

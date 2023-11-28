@@ -112,7 +112,7 @@ export default function EntityNeedsScreen() {
 
     return (
         <Base classesName={"flex-1"}>
-            <TopBar title={"Organização"} />
+            <TopBar title={"Necessidades"} />
 
             <NeedsView id={slug}/>
 

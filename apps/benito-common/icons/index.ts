@@ -12,3 +12,5 @@ export * from './EditSvg';
 export * from './UsersSvg';
 export * from './TrashSvg';
 export * from './UserAvatarSvg';
+export * from './HandHeartSvg';
+export * from './UserSvg';

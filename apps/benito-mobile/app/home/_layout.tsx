@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router/tabs';
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
+import {HandHeartIcon, UserIcon, UsersIcon} from "benito-common/icons";
 
 
 export const TabBarIcon = ({title}) => {
@@ -19,6 +20,7 @@ export const TabsLayout = () => {
       initialRouteName="needs"
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
       }}
       tabBar={(props) => <BottomTabBar {...props} />}
     >
@@ -27,7 +29,7 @@ export const TabsLayout = () => {
         options={{
           href: '/home/user-profile',
           title: 'Usuário',
-          tabBarIcon: ({ color }) => (<TabBarIcon title="profile" />),
+          tabBarIcon: ({ color }) => (<UserIcon color={color} height={32} width={32}/>),
         }}
       />
       <Tabs.Screen
@@ -35,7 +37,7 @@ export const TabsLayout = () => {
         options={{
           href: '/home/needs',
           title: 'Necessidades',
-          tabBarIcon: ({ color }) => (<TabBarIcon title="needs" />),
+          tabBarIcon: ({ color }) => (<HandHeartIcon color={color} height={26} width={26}/>),
         }}
       />
       <Tabs.Screen
@@ -43,7 +45,7 @@ export const TabsLayout = () => {
         options={{
           href: '/home/entities',
           title: 'Organizações',
-          tabBarIcon: ({ color }) => (<TabBarIcon title="Organizações" />),
+          tabBarIcon: ({ color }) => (<UsersIcon color={color} height={36} width={36}/>),
         }}
       />
     </Tabs>
