@@ -13,19 +13,21 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ProgressBarView } from '../../../src/components/ProgressBar';
 
 
-type NeedViewProps = {
-    need: ItemNeed
-}
 
 const formatProgress = (p: number) => {
     return (p * 100).toFixed(0)
 }
 
 
+type NeedViewProps = {
+    need: ItemNeed
+}
 
 const NeedView = ({ need }: NeedViewProps) => {
     const [geolocation] = useGeolocation();
-    const closestAddress = findClosestPlace(geolocation, need.entity?.places)
+
+    const entity = need.entity;
+    const closestAddress = findClosestPlace(geolocation, entity?.places)
     const progress = need.currentAcquired/need.minimum
     
     return (
@@ -39,17 +41,18 @@ const NeedView = ({ need }: NeedViewProps) => {
                 <SText className={"mt-4 text-justify"} style={{ lineHeight: 20 }}>
                     {need.description}
                 </SText>
-                { need.minimum && need.minimum > 0 &&
 
+                { need.minimum && need.minimum > 0 &&
                      <ProgressBarView text={formatProgress(progress)} progress={progress} />
                 }
+
                 <TouchableOpacity
-                    onPress={s => router.push(`/entities/${need.entity.id}`)}>
+                    onPress={s => router.push(`/entities/${entity.id}`)}>
 
                     <SView className={"bg-white rounded-2xl p-3 mt-10"}> 
                         <SView className={"flex flex-row items-center gap-x-8 mb-5"}>
-                            <SImage source={{ uri: need.entity.iconUrl }} className={"w-16 h-16"}/>
-                            <SText className={"text-center text-lg font-medium max-w-[80%]"}>{need.entity.name}</SText>
+                            <SImage source={{ uri: entity.iconUrl }} className={"w-16 h-16"}/>
+                            <SText className={"text-center text-lg font-medium max-w-[80%]"}>{entity.name}</SText>
                         </SView>
                         <WorkingTime workingDays={[]} {...closestAddress?.address}/>
                         <SView>
@@ -68,8 +71,6 @@ const NeedView = ({ need }: NeedViewProps) => {
 
 export default function NeedScreen() {
     const { slug } = useLocalSearchParams();
-
-    const [position, _] = useGeolocation();
 
     const {data: need, isFetching} = useFindUniqueItemNeed({
         select: {

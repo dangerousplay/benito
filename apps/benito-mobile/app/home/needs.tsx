@@ -29,6 +29,7 @@ const Needs = () => {
         data: itemNeeds, isFetching
     } = useFindManyItemNeed({
         select: {
+            id: true,
             name: true,
             description: true,
             currentAcquired: true,
@@ -58,6 +59,7 @@ const Needs = () => {
         },
 
         where: {
+            completed: false,
             name: {
                 contains: filters.name,
                 mode: 'insensitive'
