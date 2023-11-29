@@ -52,7 +52,7 @@ const NeedView = ({ need }: NeedViewProps) => {
                     <SView className={"bg-white rounded-2xl p-3 mt-10"}> 
                         <SView className={"flex flex-row items-center gap-x-8 mb-5"}>
                             <SImage source={{ uri: entity.iconUrl }} className={"w-16 h-16"}/>
-                            <SText className={"text-center text-lg font-medium max-w-[80%]"}>{entity.name}</SText>
+                            <SText className={"text-center text-lg font-medium max-w-[70%]"}>{entity.name}</SText>
                         </SView>
                         <WorkingTime workingDays={[]} {...closestAddress?.address}/>
                         <SView>

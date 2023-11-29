@@ -24,6 +24,7 @@ export type MiddleFilter = {
 }
 
 export type Item = {
+    id: string;
     name: string;
     description: string;
     iconUrl: string;
@@ -65,21 +66,26 @@ export function CardMapList<T extends Item>({
         return i.places
             .map(p => p.place)
             .filter(p => p.address.latitude && p.address.longitude)
-            .map(p => (
-                <Marker className={markerClassName}
-                        coordinate={{ ...p.address }}
-                        title={i.name}
-                        description={i.description}
-                >
-                    <SImage source={{uri: i.iconUrl}} className={markerClassName} />
-                </Marker>
-        ))
+            .map(p => {
+                return (
+                    <Marker className={markerClassName}
+                            coordinate={{ ...p.address }}
+                            title={i.name}
+                            description={i.description}
+                            identifier={p.id}
+                            key={p.id}
+                    >
+                        <SImage source={{uri: i.iconUrl}} className={markerClassName}/>
+                    </Marker>
+                )
+            })
     })?.flat() ?? []
 
     if (position) {
         markers.push(
             <Marker
                 coordinate={position}
+                key={position}
                 title={"Sua posição"}
                 onDragEnd={e => {
                     const coordinate = e.nativeEvent?.coordinate;
