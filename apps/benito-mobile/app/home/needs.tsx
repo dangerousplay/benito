@@ -1,11 +1,13 @@
 import {Address, useFindManyItemCategory, useFindManyItemNeed} from "benito-common/hooks";
 
 import {useState} from "react";
+import { router } from 'expo-router';
 
 import debounce from "lodash.debounce"
 import {CardMapList} from "@/components/card";
 import {Bar} from 'react-native-progress';
 import {SText, SView} from "@/components/core";
+import { ProgressBarView } from "../../src/components/ProgressBar";
 
 
 const formatProgress = (p: number) => {
@@ -85,6 +87,8 @@ const Needs = () => {
         ?.map(i => ({ ...i, iconUrl: i.category.iconUrl, places: i.entity.places, title: i.name }))
     ?? []
 
+    
+
     return (
         <CardMapList items={items}
                      onSearch={s => updateFilters((f: Filters) => ({...f, name: s}))}
@@ -99,14 +103,10 @@ const Needs = () => {
                          const progress = s.currentAcquired/s.minimum
 
                          return s.minimum && s.minimum > 0 &&
-                          <SView className={"mt-3 justify-center"} >
-                            <Bar progress={progress} unfilledColor={"#8ebff6"} height={15} width={null} />
-                            <SText className={"absolute font-bold text-white pl-[50%]"}>
-                                {formatProgress(progress)}%
-                            </SText>
-                          </SView>
+                           <ProgressBarView text={formatProgress(progress)} progress={progress}/>
                         }
                     }
+                    onItemClick={i => router.push(`/needs/${i.id}`)}
         />
     )
 };

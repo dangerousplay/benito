@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -13292,6 +13292,7 @@ packages:
     resolution: {directory: ../benito-common, type: directory}
     id: file:../benito-common
     name: benito-common
+    version: 1.0.0
     dependencies:
       '@prisma/client': 5.2.0
       '@tanstack/react-query': 5.8.4(react-dom@18.2.0)(react-native@0.72.3)(react@18.2.0)
