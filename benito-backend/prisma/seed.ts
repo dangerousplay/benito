@@ -350,7 +350,7 @@ const itemCategoriesImages: Photo[] = [
   {id: "3", imagePath: "./images/item_category/construction.png"},
   {id: "4", imagePath: "./images/item_category/pet_items.png"},
   {id: "5", imagePath: "./images/item_category/medicine.png"},
-  {id: "6", imagePath: "./images/item_category/medicine.png"},
+  {id: "6", imagePath: "./images/item_category/blanket.png"},
   {id: "7", imagePath: "./images/item_category/hygiene.png"},
 ]
 
