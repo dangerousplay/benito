@@ -373,6 +373,8 @@ const needs: Prisma.ItemNeedCreateInput[] = [
     },
     completed: false,
     active: true,
+    minimum: 23,
+    currentAcquired: 12,
   },
   {
     id: "2",
