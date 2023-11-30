@@ -14,3 +14,4 @@ export * from './TrashSvg';
 export * from './UserAvatarSvg';
 export * from './HandHeartSvg';
 export * from './UserSvg';
+export * from './CheckmarkCircleSvg';

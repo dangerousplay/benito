@@ -174,7 +174,7 @@ export default function Need() {
                             
                             <SView className={"pt-4"}>
                                 <CheckBox
-                                    label={"Necessidade finalizada"}
+                                    label={"Finalizar necessidade"}
                                     value={values.completed}
                                     onSelectionChanges={v => values.completed = v}
                                 />

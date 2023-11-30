@@ -5,7 +5,7 @@ import React from "react";
 import {router, useLocalSearchParams} from "expo-router";
 import {SFlatList, SImage, SText, SView} from "@/components/core";
 import {ActivityIndicator, TouchableOpacity} from "react-native";
-import {EditIcon} from "benito-common/icons";
+import {CheckMarkCircleIcon, EditIcon} from "benito-common/icons";
 import {ProgressBarView} from "@/components/ProgressBar";
 
 
@@ -13,6 +13,7 @@ type NeedViewProps = {
     iconUrl: string;
     title: string;
     description: string;
+    completed: boolean;
     minimum: number;
     currentAcquired: number;
 }
@@ -23,6 +24,9 @@ const NeedView = ({iconUrl, title, description, completed, minimum, currentAcqui
     return (
         <SView className={"bg-white rounded-2xl p-3 mt-4"}>
 
+            <SView className={"h-1 items-end"}>
+                {completed ? <CheckMarkCircleIcon height={32} width={32}/> : <></>}
+            </SView>
 
             <SView className={"flex-row items-center space-x-4"}>
 
@@ -101,40 +105,41 @@ const NeedsView = ({id}: NeedsViewProps) => {
 
 
     const items = itemNeeds
-            ?.map(i => ({ ...i, iconUrl: i.category.iconUrl, places: i.entity.places, title: i.name }))
+            ?.map(i => ({...i, iconUrl: i.category.iconUrl, places: i.entity.places, title: i.name}))
         ?? []
 
     return (
         <SView className={""}>
 
             <SView className={"mx-2"}>
-                {isFetching && <ActivityIndicator size={"large"} />}
+                {isFetching && <ActivityIndicator size={"large"}/>}
 
                 {!isFetching && <SFlatList data={items}
                                            renderItem={(i) =>
                                                <TouchableOpacity
                                                    onPress={(_) => router.push(`/entities/${id}/needs/createOrEdit?entityId=${id}&needId=${i.item.id}`)}>
-                                                 <NeedView {...i.item}/>
-                                              </TouchableOpacity>}
+                                                   <NeedView {...i.item}/>
+                                               </TouchableOpacity>}
                                            className={"h-[92%]"}
-                                />}
+                />}
             </SView>
         </SView>
-    )  
+    )
 };
 
 
 export default function EntityNeedsScreen() {
-    const { slug } = useLocalSearchParams();
+    const {slug} = useLocalSearchParams();
 
     return (
         <Base classesName={"flex-1"}>
-            <TopBar title={"Necessidades"} />
+            <TopBar title={"Necessidades"}/>
 
             <NeedsView id={slug}/>
 
             <SView className={"absolute bottom-1 w-[100%] items-center"}>
-                <Button classesName={"w-[100%]"} onClick={() => router.push(`/entities/${slug}/needs/createOrEdit?entityId=${slug}`)}>
+                <Button classesName={"w-[100%]"}
+                        onClick={() => router.push(`/entities/${slug}/needs/createOrEdit?entityId=${slug}`)}>
                     Adicionar necessidade
                 </Button>
             </SView>
