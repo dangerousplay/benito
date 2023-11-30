@@ -5,14 +5,8 @@ import { router } from 'expo-router';
 
 import debounce from "lodash.debounce"
 import {CardMapList} from "@/components/card";
-import {Bar} from 'react-native-progress';
-import {SText, SView} from "@/components/core";
 import { ProgressBarView } from "../../src/components/ProgressBar";
 
-
-const formatProgress = (p: number) => {
-    return (p * 100).toFixed(0)
-}
 
 type Filters = {
   name?: string;
@@ -105,7 +99,9 @@ const Needs = () => {
                          const progress = s.currentAcquired/s.minimum
 
                          return s.minimum && s.minimum > 0 &&
-                           <ProgressBarView text={formatProgress(progress)} progress={progress}/>
+                           <ProgressBarView progress={progress}
+                                            rightText={`${s.currentAcquired}/${s.minimum}`}
+                           />
                         }
                     }
                     onItemClick={i => router.push(`/needs/${i.id}`)}

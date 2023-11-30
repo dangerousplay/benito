@@ -6,33 +6,47 @@ import {router, useLocalSearchParams} from "expo-router";
 import {SFlatList, SImage, SText, SView} from "@/components/core";
 import {ActivityIndicator, TouchableOpacity} from "react-native";
 import {EditIcon} from "benito-common/icons";
+import {ProgressBarView} from "@/components/ProgressBar";
 
 
 type NeedViewProps = {
     iconUrl: string;
     title: string;
     description: string;
+    minimum: number;
+    currentAcquired: number;
 }
 
-const NeedView = ({iconUrl, title, description}: NeedViewProps) => {
-  return (
-      <SView className={"bg-white rounded-2xl p-3 mt-4"}>
-          <SView className={"flex-row items-center space-x-4"}>
-              <SView className={"justify-center"}>
-                  <SImage source={{uri: iconUrl}} width={60} height={60}/>
-              </SView>
+const NeedView = ({iconUrl, title, description, completed, minimum, currentAcquired}: NeedViewProps) => {
+    const progress = currentAcquired / minimum;
 
-              <SView className={"mr-14"}>
-                  <SView className={"flex-row"}>
-                      <SText className={"text-xl leading-normal"}>{title}</SText>
-                      <EditIcon />
-                  </SView>
-                  
-                  <SText className={"font-light"}>{description}</SText>
-              </SView>
-          </SView>
-      </SView>
-  )  
+    return (
+        <SView className={"bg-white rounded-2xl p-3 mt-4"}>
+
+
+            <SView className={"flex-row items-center space-x-4"}>
+
+                <SView className={"justify-center"}>
+                    <SImage source={{uri: iconUrl}} width={60} height={60}/>
+                </SView>
+
+                <SView className={"max-w-[80%]"}>
+                    <SView className={"flex-row"}>
+                        <SText className={"text-xl leading-normal max-w-[95%]"}>{title}</SText>
+                        <EditIcon/>
+                    </SView>
+
+                    <SText className={"font-light"}>{description}</SText>
+                </SView>
+            </SView>
+
+            {minimum && currentAcquired &&
+                <ProgressBarView progress={progress}
+                                 rightText={`${currentAcquired}/${minimum}`}
+                />
+            }
+        </SView>
+    )
 };
 
 
@@ -49,6 +63,9 @@ const NeedsView = ({id}: NeedsViewProps) => {
             id: true,
             name: true,
             description: true,
+            completed: true,
+            currentAcquired: true,
+            minimum: true,
             entity: {
                 select: {
                     id: true,

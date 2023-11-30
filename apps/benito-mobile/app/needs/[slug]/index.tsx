@@ -14,11 +14,6 @@ import { ProgressBarView } from '../../../src/components/ProgressBar';
 
 
 
-const formatProgress = (p: number) => {
-    return (p * 100).toFixed(0)
-}
-
-
 type NeedViewProps = {
     need: ItemNeed
 }
@@ -43,7 +38,8 @@ const NeedView = ({ need }: NeedViewProps) => {
                 </SText>
 
                 { need.minimum && need.minimum > 0 &&
-                     <ProgressBarView text={formatProgress(progress)} progress={progress} />
+                     <ProgressBarView progress={progress}
+                                      rightText={`${need.currentAcquired}/${need.minimum}`} />
                 }
 
                 <TouchableOpacity
