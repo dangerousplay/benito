@@ -3,13 +3,9 @@ import {
     CardBody,
     Chip,
 } from "@nextui-org/react";
-import Pin from "../../assets/icons/PinSvg.tsx";
-import CompassSvg from "../../assets/icons/CompassSvg.tsx";
-
-
-import { formatDistance } from 'benito-common/geolocation';
-import { formatAddress } from 'benito-common/address';
 import React from "react";
+import {WorkingTime} from "../WorkingTime.tsx";
+import {AddressView} from "../AddressView.tsx";
 
 
 type CardItemEventListener = {
@@ -41,31 +37,29 @@ const CardItem = (props: CardItemProps) => {
               onClick={(_) => onItemClick(props)}
               onMouseEnter={(_) => onItemHover(props)}>
             <CardBody>
-                <div className={"flex flex-row gap-x-6 items-center"}>
+                <div className={"flex flex-row space-x-6 items-center"}>
                     <img src={iconUrl} alt={"logo " + title} className={"h-32 w-32"}/>
 
-                    <div className={"space-y-4"}>
+                    <div className={"space-y-6"}>
                         <div>
                             <div className={"flex gap-x-4 items-center"}>
-                                <h2 className={"font-medium text-xl"}>{title}</h2>
+                                <h2 className={"font-medium text-xl xl:text-2xl"}>{title}</h2>
                                 {tags
-                                    .map(t => <Chip key={t} color={"primary"} className={"h-5"}>{t}</Chip>)
+                                    .map(t => <Chip key={t} color={"primary"} className={"h-5 xl:text-xl xl:h-8"}>{t}</Chip>)
                                 }
                             </div>
 
                             {description.split("\n")
-                                .map(t => <p key={t} className={"font-light"}>{t}</p>)
+                                .map(t => <p key={t} className={"font-light xl:text-xl"}>{t}</p>)
                             }
                         </div>
 
-                        <div className={"flex gap-x-4"}>
-                            <div className={"flex gap-x-1"}>
-                                <Pin/> <p className={"font-light"}>{formatAddress(address)}</p>
-                            </div>
+                        <div className={"space-y-1"}>
+                            <WorkingTime opensAt={address.opensAt}
+                                         closesAt={address.closesAt}
+                                         workingDays={address.workingDays} />
 
-                            {distance && <div className={"flex gap-x-1"}>
-                                <CompassSvg /> <p className={"font-light"}>{formatDistance(distance)}</p>
-                            </div>}
+                            <AddressView address={address} distance={distance}/>
                         </div>
                     </div>
                 </div>

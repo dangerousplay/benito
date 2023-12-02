@@ -171,7 +171,7 @@ export default function ListNeeds() {
     })
 
     const needs: NeedProps[] = itemNeeds ? itemNeeds.map(i => {
-        const addresses = i.entity.places.map(p => p.place.address);
+        const addresses = i.entity.places.map(({place}) => ({...place, ...place.address}));
 
         const closestAddress = isGeolocationAvailable ?
             findClosestAddress({ lat: coords?.latitude, lon: coords?.longitude }, addresses) :
