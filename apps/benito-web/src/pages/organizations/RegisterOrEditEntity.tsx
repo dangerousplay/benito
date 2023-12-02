@@ -11,6 +11,7 @@ import {useCreateEntity, useUpdateEntity} from 'benito-common/hooks';
 import {toFormikValidate} from "zod-formik-adapter";
 import {InputMasked} from "../../components/input";
 import {useEntityClient} from 'benito-common/client';
+import {useNavigate} from "react-router-dom";
 
 
 const validationSchema = toFormikValidate(EntityCreateSchema.merge(EntityPlaceSchema).omit({
@@ -29,8 +30,8 @@ const InputSection = ({title, inputs}: InputSectionProps) => {
   return (
       <Card>
           <div className={"flex-col justify-center items-start"}>
-              <div className={"pl-2 pt-2"}>
-                  <p className={"font-bold text-sm"}>{title}</p>
+              <div className={"pl-2 pt-2 xl:pt-4 xl:pl-4"}>
+                  <p className={"font-bold"}>{title}</p>
               </div>
 
               <div className={"border-b-1 border-gray-400 w-full pt-2"}/>
@@ -54,6 +55,7 @@ export default function RegisterOrEditEntity() {
     const createEntity = useCreateEntity();
     const updateEntity = useUpdateEntity();
     const [image, setImage] = useState();
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {},
@@ -147,7 +149,7 @@ export default function RegisterOrEditEntity() {
     return (
         <Card>
             <CardHeader className={"justify-center items-center font-medium"}>
-                <p>Registrar nova organização</p>
+                <p className={"xl:text-xl"}>Registrar nova organização</p>
             </CardHeader>
 
                 <form onSubmit={formik.handleSubmit}>
@@ -196,7 +198,11 @@ export default function RegisterOrEditEntity() {
 
                     </div>
 
-                    <Button className={"mx-10 mb-10 w-full"} color={"danger"} variant={"shadow"} type={"submit"}>Salvar</Button>
+                    <div className={"mx-10 mb-10"}>
+                        <Button className={"w-full"} color={"danger"} variant={"shadow"} type={"submit"}>
+                            Salvar
+                        </Button>
+                    </div>
 
                 </form>
 
