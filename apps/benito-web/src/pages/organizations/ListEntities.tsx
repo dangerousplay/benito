@@ -160,7 +160,7 @@ export default function ListEntities() {
     }, 250)
 
     const entities: CardItemProps[] = organizations ? organizations.map(e => {
-        const addresses = e.places.map(p => p.place.address);
+        const addresses = e.places.map(({place}) => ({...place, ...place.address}));
 
         let closestAddress = addresses[0];
 
