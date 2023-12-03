@@ -14,6 +14,7 @@ import { findClosestAddress } from 'benito-common/address';
 import {CardMapList} from "../../components/card";
 import {useRef, useState} from "react";
 import {Selectable} from "../../components/Selectable.tsx";
+import {ProgressBar} from "../../components/progress";
 
 
 type NeedProps = {
@@ -128,6 +129,8 @@ export default function ListNeeds() {
         select: {
             name: true,
             description: true,
+            minimum: true,
+            currentAcquired: true,
             entity: {
                 select: {
                     id: true,
@@ -184,6 +187,8 @@ export default function ListNeeds() {
             address: closestAddress,
             distance: closestAddress.distance,
             entityId: i.entity.id,
+            minimum: i.minimum,
+            currentAcquired: i.currentAcquired,
             tags: [i.category.name],
         }
     }) : [];
@@ -198,6 +203,9 @@ export default function ListNeeds() {
         <CardMapList items={needs}
                      setAddressFilter={f => {
                         setAddressFilter(f)
+                     }}
+                     afterTextComponent={i => {
+                         return i.minimum && <ProgressBar value={i.currentAcquired/i.minimum} rightComponent={<p className={"text-inherit"}>{i.currentAcquired}/{i.minimum}</p>}/>
                      }}
                      cardHeader={
                         <Filter organizations={organizations}
