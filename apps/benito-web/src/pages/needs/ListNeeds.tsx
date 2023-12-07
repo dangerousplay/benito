@@ -15,6 +15,7 @@ import {CardMapList} from "../../components/card";
 import {useRef, useState} from "react";
 import {Selectable} from "../../components/Selectable.tsx";
 import {ProgressBar} from "../../components/progress";
+import {useNavigate} from "react-router-dom";
 
 
 type NeedProps = {
@@ -111,6 +112,8 @@ export default function ListNeeds() {
         select: { name: true, id: true }
     })
 
+    const navigate = useNavigate();
+
     const { coords, isGeolocationAvailable } =
         useGeolocated({
             positionOptions: {
@@ -127,6 +130,7 @@ export default function ListNeeds() {
 
     const { data: itemNeeds } = useFindManyItemNeed({
         select: {
+            id: true,
             name: true,
             description: true,
             minimum: true,
@@ -181,6 +185,7 @@ export default function ListNeeds() {
             addresses[0];
 
         return {
+            id: i.id,
             title: i.name,
             description: i.description,
             iconUrl: i.category.iconUrl,
@@ -207,6 +212,7 @@ export default function ListNeeds() {
                      afterTextComponent={i => {
                          return i.minimum && <ProgressBar value={i.currentAcquired/i.minimum} rightComponent={<p className={"text-inherit"}>{i.currentAcquired}/{i.minimum}</p>}/>
                      }}
+                     onItemClick={i => navigate(`/home/needs/${i.id}`)}
                      cardHeader={
                         <Filter organizations={organizations}
                                 onFilterUpdated={updateFilters}
