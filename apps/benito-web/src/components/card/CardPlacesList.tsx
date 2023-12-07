@@ -32,16 +32,17 @@ const CardItem = (props: CardItemProps) => {
     const {
         iconUrl, title, description,
         address, distance, tags,
-        onItemClick = (_) => {},
+        onItemClick = (_) => {console.log("clic")},
         onItemHover = (_) => {},
         afterTextComponent
     } = props;
 
     return (
         <Card className={"cursor-pointer hover:bg-gray-100"}
-              onClick={(_) => onItemClick(props)}
               onMouseEnter={(_) => onItemHover(props)}>
-            <CardBody className={"w-full"}>
+            <CardBody className={"w-full"}
+                      onClick={(_) => onItemClick(props)}
+            >
                 <div className={"flex flex-row space-x-6 items-center"}>
                     <img src={iconUrl} alt={"logo " + title} className={"h-32 w-32"}/>
 
@@ -87,7 +88,7 @@ export const CardPlacesList = ({ items, cardHeader, cardFooter, onItemClick, aft
         <Card className={"w-full"}>
             {cardHeader}
 
-            <CardBody className={"gap-y-4 w-full"}>
+            <CardBody className={"gap-y-4 w-full"} >
                 {items.map(i => <CardItem afterTextComponent={afterTextComponent} {...i} onItemClick={onItemClick}/>)}
             </CardBody>
 

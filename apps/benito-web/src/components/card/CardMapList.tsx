@@ -12,6 +12,9 @@ const defaultIconSize = () => new google.maps.Size(60, 60, "px", "px")
 
 const defaultMaxDistance = 14;
 
+const showInMapClicked = (lat: number, lon: number) => {
+    window.open(`https://maps.google.com?q=${lat},${lon}`);
+};
 
 type MapViewProps = {
     items: CardItemProps[];
@@ -85,9 +88,13 @@ type CardMapListProps = {
     iconSize?: google.maps.Size;
     onMapCreated?: (g: google.maps.Map) => void;
 
+    afterTextComponent?: (i: any) => React.ReactElement;
+
     maxDistance?: number;
 
     setAddressFilter?: (_: any) => void;
+
+    onItemClick?: (_: any) => void;
 
     classNames?: SlotsToClasses<CardClassNames>;
 
@@ -99,6 +106,11 @@ export const CardMapList = (props: CardMapListProps) => {
     const setAddressFilter = props.setAddressFilter
     const maxDistance = props.maxDistance ?? defaultMaxDistance;
     let center = props.center;
+    const onMarkerClick = (i: CardItemProps) => {
+        const {latitude, longitude} = i.address;
+        showInMapClicked(latitude, longitude);
+        props.onMarkerClick && props.onMarkerClick(i);
+    }
 
     const map = useRef<google.maps.Map>(undefined);
 
@@ -171,6 +183,7 @@ export const CardMapList = (props: CardMapListProps) => {
             <CardHeader {...props}
                         center={center}
                         additionalMarkers={aditionalMarkers}
+                        onMarkerClick={onMarkerClick}
                         onMapCreated={(m) => { map.current = m}} />
         } items={items} />
     )
