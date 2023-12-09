@@ -36,7 +36,7 @@ const BreadCrumbs = () => {
     return (
       <section className={"m-10 ml-72"}>
         <Breadcrumbs itemClasses={{
-            item: ["text-xl data-[current=true]:font-bold"]
+            item: ["text-xl xl:text-2xl data-[current=true]:font-bold"]
         }}>
             {paths.map((v, i) => {
                 return (

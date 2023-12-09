@@ -37,9 +37,9 @@ export default function Sidebar({ menus, routePrefix }: Readonly<SideBarProps>) 
                 return (
                     <li key={path} className={``}>
                         <Link to={routePath}>
-                            <div className={`flex flex-row gap-x-4 p-5 mr-6 rounded-lg ${selectedClass}`}>
+                            <div className={`flex flex-row gap-x-4 p-5 mr-8 rounded-lg ${selectedClass}`}>
                                 {r.icon}
-                                <p>{r.title}</p>
+                                <p className={"xl:text-xl"}>{r.title}</p>
                             </div>
                             {r?.submenus && <div className={"ml-4 mt-3"}>
                                 {r?.submenus?.map(s => {
@@ -50,7 +50,7 @@ export default function Sidebar({ menus, routePrefix }: Readonly<SideBarProps>) 
                                     return (
                                         <div className={`rounded-lg p-2 ${selectedClass}`} key={subroutePath}>
                                             <Link to={subroutePath}>
-                                                <p>{s.title}</p>
+                                                <p className={"xl:text-xl"}>{s.title}</p>
                                             </Link>
                                         </div>
                                     )

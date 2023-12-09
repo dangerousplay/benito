@@ -16,7 +16,7 @@ export const NavigationBar = () => {
 
             <NavbarContent justify="end" className={"gap-x-4 justify-end"}>
                 <NavbarItem>
-                    <Link href="/home/organizations">
+                    <Link href="/home/needs">
                         <Button color="danger" size="sm" startContent={<HeartIcon className={"w-4"}/>} className={"font-bold text-medium"}>
                             Doar
                         </Button>
