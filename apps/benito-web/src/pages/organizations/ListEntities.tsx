@@ -9,12 +9,13 @@ import {findClosestAddress} from 'benito-common/address';
 import {useGeolocated} from "react-geolocated";
 import {CardItemProps, CardMapList} from "../../components/card";
 import {useRef, useState} from "react";
-import {CardHeader, Input, Popover, PopoverContent, PopoverTrigger} from "@nextui-org/react";
+import {CardHeader, Input, Popover, PopoverContent, PopoverTrigger, Spinner} from "@nextui-org/react";
 import {SearchIcon} from "../../assets/icons/SearchSvg.tsx";
 import {FilterIcon} from "../../assets/icons/FiltersSvg.tsx";
 import {Selectable} from "../../components/Selectable.tsx";
 
 import debounce from "lodash.debounce"
+import {useNavigate} from "react-router-dom";
 
 
 type Filters = {
@@ -84,6 +85,7 @@ const Filter = ({
 }
 
 export default function ListEntities() {
+    const navigate = useNavigate();
 
     const {coords, isGeolocationAvailable} =
         useGeolocated({
@@ -170,6 +172,7 @@ export default function ListEntities() {
         }
 
         return {
+            id: e.id,
             title: e.name,
             description: e.description,
             iconUrl: e.iconUrl,
@@ -178,6 +181,10 @@ export default function ListEntities() {
             tags: e.tags.map(t => t.tag.name)
         }
     }) : []
+
+    if (isFetching) {
+        return <Spinner size={"lg"}/>
+    }
 
     return (
         <CardMapList
@@ -190,6 +197,7 @@ export default function ListEntities() {
                         categories={entityCategories}
                 />
             }
+            onItemClick={i => navigate(`/home/organizations/${i.id}`)}
         />
     )
 }
