@@ -116,6 +116,7 @@ export const NeedView = (props: NeedViewProps) => {
         })
     ]
 
+
   return (
       <div>
           <Card>
@@ -128,7 +129,9 @@ export const NeedView = (props: NeedViewProps) => {
 
 
               <CardBody className={"mt-2 border-b-2"}>
-                  <p className={"text-xl"}>{itemNeed.description}</p>
+                  {itemNeed.description
+                      .split("\n")
+                      .map(i => <p key={i} className={"xl:text-xl"}>{i}</p>)}
 
                   {itemNeed?.minimum > 0 && <div className={"mt-8"}>
                       <ProgressBar value={progress}
@@ -143,7 +146,6 @@ export const NeedView = (props: NeedViewProps) => {
               </CardBody>
 
               <EntityView itemNeed={itemNeed} address={address}/>
-
 
           </Card>
 
