@@ -1,11 +1,7 @@
-import {Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, Input} from "@nextui-org/react";
+import {Button, Card, CardBody, CardHeader, Checkbox, CheckboxGroup, Input, Textarea} from "@nextui-org/react";
 import {ReactElement, useState} from "react";
 import {PhotoUploadInput} from "../../components/input/PhotoUpload.tsx";
 import {useFormik} from "formik";
-
-import {Textarea} from "@nextui-org/react";
-
-
 import {EntityCreateSchema, EntityPlaceSchema} from 'benito-common/zod/models';
 import {useCreateEntity, useUpdateEntity} from 'benito-common/hooks';
 import {toFormikValidate} from "zod-formik-adapter";
@@ -124,7 +120,9 @@ export default function RegisterOrEditEntity() {
                 }
             }
 
-            upload().catch(e => console.error(e))
+            upload()
+                .then(_ => navigate('/home/organizations'))
+                .catch(e => console.error(e))
         },
         validate: validationSchema
     });
